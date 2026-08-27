@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Владимир Евсеев — Личный Портал & Web Apps</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Evseev Hub">
+  <meta name="theme-color" content="#0a0b10">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #07080c;
+      --card-bg: rgba(18, 22, 32, 0.85);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --accent: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.25);
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --verbum: #0ea5e9;
+      --foldwink: #f97316;
+      --games: #a855f7;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg);
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 85% 85%, rgba(168, 85, 247, 0.08) 0%, transparent 40%);
+      background-attachment: fixed;
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 90px;
+    }
+    header {
+      padding: 24px 20px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .profile-info {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #0284c7, #6366f1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      font-weight: 800;
+      color: #fff;
+      box-shadow: 0 4px 14px var(--accent-glow);
+    }
+    .profile-title {
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+    .profile-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      margin-top: 2px;
+    }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #4ade80;
+    }
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 8px #22c55e;
+    }
+    main {
+      padding: 0 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .section-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+      margin-top: 8px;
+      margin-bottom: 2px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .app-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 20px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    .app-card:active {
+      transform: scale(0.98);
+      border-color: var(--accent);
+    }
+    .app-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .app-icon-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .app-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+    .app-name {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.2px;
+    }
+    .app-tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    .app-desc {
+      font-size: 13px;
+      line-height: 1.45;
+      color: var(--text-muted);
+    }
+    .app-btn {
+      width: 100%;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+    }
+    .btn-verbum {
+      background: linear-gradient(135deg, #0284c7, #0369a1);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3);
+    }
+    .btn-foldwink {
+      background: linear-gradient(135deg, #ea580c, #c2410c);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(234, 88, 12, 0.3);
+    }
+    .btn-neutral {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Bottom Tab Bar */
+    .tabbar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 75px;
+      background: rgba(10, 12, 18, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 0 10px 15px;
+      z-index: 100;
+    }
+    .tab-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 12px;
+      transition: all 0.15s ease;
+    }
+    .tab-item.active {
+      color: var(--accent);
+    }
+    .tab-icon {
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="profile-info">
+      <div class="avatar">VE</div>
+      <div>
+        <div class="profile-title">evseev.site</div>
+        <div class="profile-subtitle">Владимир Евсеев</div>
+      </div>
+    </div>
+    <div class="status-badge">
+      <span class="status-dot"></span>
+      Online
+    </div>
+  </header>
+
+  <main>
+    <div class="section-title">🎙️ Голосовой Движок & Заметки</div>
+
+    <a href="/verbum/" class="app-card">
+      <div class="app-card-top">
+        <div class="app-icon-wrap">
+          <div class="app-icon" style="background: rgba(14, 165, 233, 0.15); color: #38bdf8;">🎙️</div>
+          <div>
+            <div class="app-name">Verbum Телефон-Конспектатор</div>
+            <div class="profile-subtitle">Live AI Transcription</div>
+          </div>
+        </div>
+        <span class="app-tag" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8;">Active</span>
+      </div>
+      <div class="app-desc">
+        Говорите в микрофон iPhone — движок мгновенно расшифровывает русскую и английскую речь и собирает структурированные Markdown-конспекты.
+      </div>
+      <div class="app-btn btn-verbum">
+        Открыть Телефон-Конспектатор ➔
+      </div>
+    </a>
+
+    <div class="section-title">🕹️ Игры & Приложения</div>
+
+    <a href="/games/foldwink/" class="app-card">
+      <div class="app-card-top">
+        <div class="app-icon-wrap">
+          <div class="app-icon" style="background: rgba(249, 115, 22, 0.15); color: #fb923c;">🎲</div>
+          <div>
+            <div class="app-name">Foldwink v0.8.2</div>
+            <div class="profile-subtitle">Word Puzzle (RU / EN / DE)</div>
+          </div>
+        </div>
+        <span class="app-tag" style="background: rgba(249, 115, 22, 0.15); color: #fb923c;">Updated</span>
+      </div>
+      <div class="app-desc">
+        Логическая головоломка 4x4 на ассоциации слов. 100+ уровней с русскими терминами, анимациями и звуковыми эффектами.
+      </div>
+      <div class="app-btn btn-foldwink">
+        Играть в Foldwink ➔
+      </div>
+    </a>
+
+    <div class="section-title">🌌 Проекты & Ссылки</div>
+
+    <a href="https://neural-void.com" target="_blank" class="app-card">
+      <div class="app-card-top">
+        <div class="app-icon-wrap">
+          <div class="app-icon" style="background: rgba(168, 85, 247, 0.15); color: #c084fc;">🌌</div>
+          <div>
+            <div class="app-name">Neural Void</div>
+            <div class="profile-subtitle">neural-void.com</div>
+          </div>
+        </div>
+        <span class="app-tag" style="background: rgba(168, 85, 247, 0.15); color: #c084fc;">Official</span>
+      </div>
+      <div class="app-desc">
+        Официальный портал и витрина проектов студии Neural Void.
+      </div>
+      <div class="app-btn btn-neutral">
+        Перейти на neural-void.com ➔
+      </div>
+    </a>
+  </main>
+
+  <nav class="tabbar">
+    <a href="/" class="tab-item active">
+      <span class="tab-icon">🏠</span>
+      <span>Главная</span>
+    </a>
+    <a href="/verbum/" class="tab-item">
+      <span class="tab-icon">🎙️</span>
+      <span>Verbum</span>
+    </a>
+    <a href="/games/foldwink/" class="tab-item">
+      <span class="tab-icon">🎲</span>
+      <span>Foldwink</span>
+    </a>
+    <a href="https://neural-void.com" class="tab-item">
+      <span class="tab-icon">🌌</span>
+      <span>Neural Void</span>
+    </a>
+  </nav>
+
+</body>
+</html>
