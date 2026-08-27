@@ -412,18 +412,50 @@
       }
     }
 
+    function downsampleTo16k(buffer, inputSampleRate) {
+      if (inputSampleRate === 16000) {
+        const int16 = new Int16Array(buffer.length);
+        for (let i = 0; i < buffer.length; i++) {
+          const s = Math.max(-1, Math.min(1, buffer[i]));
+          int16[i] = s < 0 ? s * 0x8000 : s * 0x7FFF;
+        }
+        return int16;
+      }
+      const ratio = inputSampleRate / 16000;
+      const newLen = Math.round(buffer.length / ratio);
+      const result = new Int16Array(newLen);
+      let offsetResult = 0;
+      let offsetBuffer = 0;
+      while (offsetResult < result.length) {
+        const nextOffset = Math.round((offsetResult + 1) * ratio);
+        let accum = 0, count = 0;
+        for (let i = offsetBuffer; i < nextOffset && i < buffer.length; i++) {
+          accum += buffer[i];
+          count++;
+        }
+        const sample = count > 0 ? (accum / count) : buffer[offsetBuffer];
+        const s = Math.max(-1, Math.min(1, sample));
+        result[offsetResult] = s < 0 ? s * 0x8000 : s * 0x7FFF;
+        offsetResult++;
+        offsetBuffer = nextOffset;
+      }
+      return result;
+    }
+
     async function startRecording() {
       try {
-        // 1. Request microphone access
-        mediaStream = await navigator.mediaDevices.getUserMedia({
-          audio: {
-            sampleRate: 16000,
-            channelCount: 1,
-            echoCancellation: true,
-            noiseSuppression: true,
-            autoGainControl: true
-          }
-        });
+        // 1. Request microphone access (iOS Safari compatible constraints)
+        try {
+          mediaStream = await navigator.mediaDevices.getUserMedia({
+            audio: {
+              echoCancellation: true,
+              noiseSuppression: true,
+              autoGainControl: true
+            }
+          });
+        } catch (e1) {
+          mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        }
 
         // 2. Start server session
         const resp = await fetch(`${API_BASE}/session/start`, {
@@ -435,7 +467,12 @@
         document.getElementById('sessionTitle').innerText = data.filename || 'Идет запись конспекта...';
 
         // 3. Setup Web Audio streaming
-        audioContext = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 16000 });
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        audioContext = new AudioCtx();
+        if (audioContext.state === 'suspended') {
+          await audioContext.resume();
+        }
+
         const source = audioContext.createMediaStreamSource(mediaStream);
 
         // Visualizer Analyser
@@ -447,10 +484,12 @@
         // Audio processor for PCM chunks
         const bufferSize = 4096;
         processorNode = audioContext.createScriptProcessor(bufferSize, 1, 1);
+        const inputSampleRate = audioContext.sampleRate;
         processorNode.onaudioprocess = (e) => {
           if (!isRecording) return;
           const inputData = e.inputBuffer.getChannelData(0);
-          sendAudioChunk(inputData);
+          const pcm16 = downsampleTo16k(inputData, inputSampleRate);
+          sendAudioChunkPCM(pcm16);
         };
         source.connect(processorNode);
         processorNode.connect(audioContext.destination);
@@ -474,13 +513,7 @@
       }
     }
 
-    function sendAudioChunk(float32Array) {
-      // Convert Float32 to Int16 PCM
-      const int16Array = new Int16Array(float32Array.length);
-      for (let i = 0; i < float32Array.length; i++) {
-        const s = Math.max(-1, Math.min(1, float32Array[i]));
-        int16Array[i] = s < 0 ? s * 0x8000 : s * 0x7FFF;
-      }
+    function sendAudioChunkPCM(int16Array) {
       fetch(`${API_BASE}/audio/chunk`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/octet-stream' },
