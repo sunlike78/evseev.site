@@ -3,342 +3,401 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Владимир Евсеев — Личный Портал & Web Apps</title>
+  <title>Владимир | evseev.site Home Hub</title>
+  
+  <!-- iOS / PWA Fullscreen Web App Meta -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Evseev Hub">
-  <meta name="theme-color" content="#0a0b10">
+  <meta name="theme-color" content="#07080c">
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
   <style>
     :root {
       --bg: #07080c;
-      --card-bg: rgba(18, 22, 32, 0.85);
+      --card-bg: rgba(18, 22, 34, 0.82);
       --card-border: rgba(255, 255, 255, 0.08);
       --accent: #38bdf8;
       --accent-glow: rgba(56, 189, 248, 0.25);
-      --text: #f1f5f9;
+      --green: #10b981;
+      --green-glow: rgba(16, 185, 129, 0.3);
+      --text-main: #f8fafc;
       --text-muted: #94a3b8;
-      --verbum: #0ea5e9;
+      --nullfield: #ccff00;
       --foldwink: #f97316;
-      --games: #a855f7;
+      --creep: #10b981;
+      --library: #818cf8;
+      --photo: #38bdf8;
     }
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      -webkit-tap-highlight-color: transparent;
-      user-select: none;
-    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+    
     body {
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       background-color: var(--bg);
       background-image: 
-        radial-gradient(circle at 15% 15%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
-        radial-gradient(circle at 85% 85%, rgba(168, 85, 247, 0.08) 0%, transparent 40%);
+        radial-gradient(circle at 10% 10%, rgba(56, 189, 248, 0.08) 0px, transparent 40%),
+        radial-gradient(circle at 90% 90%, rgba(168, 85, 247, 0.08) 0px, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(204, 255, 0, 0.03) 0px, transparent 60%);
       background-attachment: fixed;
-      color: var(--text);
+      color: var(--text-main);
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      padding-bottom: 90px;
+      padding: env(safe-area-inset-top, 20px) 16px calc(env(safe-area-inset-bottom, 20px) + 85px) 16px;
     }
+
+    .container { max-width: 1100px; margin: 0 auto; }
+    
     header {
-      padding: 24px 20px 16px;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-    }
-    .profile-info {
-      display: flex;
       align-items: center;
+      margin-bottom: 22px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .logo-box {
+      width: 44px; height: 44px;
+      background: linear-gradient(135deg, #0284c7, #6366f1);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+    .brand h1 { font-size: 19px; font-weight: 800; letter-spacing: -0.4px; }
+    .brand p { font-size: 11px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; margin-top: 2px; }
+
+    .status-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 12px; border-radius: 20px;
+      font-size: 11px; font-weight: 700; font-family: 'JetBrains Mono', monospace;
+      background: rgba(16, 185, 129, 0.12);
+      color: var(--green);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981; }
+
+    /* Hardware Telemetry Summary */
+    .telemetry-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .tele-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      padding: 14px 16px;
+      border-radius: 16px;
+    }
+    .tele-title {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.6px; font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .tele-value { font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 2px; }
+    .tele-sub { font-size: 10px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
+
+    /* Section Headers */
+    .section-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 24px;
+      margin-bottom: 12px;
+    }
+    .section-header h2 { font-size: 15px; font-weight: 700; letter-spacing: -0.2px; display: flex; align-items: center; gap: 8px; }
+    .section-header span { font-size: 11px; color: var(--text-muted); }
+
+    /* Grid of Services & Apps */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 14px;
     }
-    .avatar {
-      width: 48px;
-      height: 48px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, #0284c7, #6366f1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      font-weight: 800;
-      color: #fff;
-      box-shadow: 0 4px 14px var(--accent-glow);
-    }
-    .profile-title {
-      font-size: 19px;
-      font-weight: 700;
-      letter-spacing: -0.3px;
-    }
-    .profile-subtitle {
-      font-size: 12px;
-      color: var(--text-muted);
-      font-family: 'JetBrains Mono', monospace;
-      margin-top: 2px;
-    }
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
-      background: rgba(34, 197, 94, 0.12);
-      border: 1px solid rgba(34, 197, 94, 0.3);
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 600;
-      color: #4ade80;
-    }
-    .status-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #22c55e;
-      box-shadow: 0 0 8px #22c55e;
-    }
-    main {
-      padding: 0 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-    }
-    .section-title {
-      font-size: 13px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      color: var(--text-muted);
-      margin-top: 8px;
-      margin-bottom: 2px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .app-card {
+
+    .service-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border-radius: 20px;
-      padding: 20px;
+      border-radius: 18px;
+      padding: 18px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
-      text-decoration: none;
-      color: inherit;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      justify-content: space-between;
       position: relative;
       overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .app-card:active {
+    .service-card:active {
       transform: scale(0.98);
       border-color: var(--accent);
     }
-    .app-card-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .app-icon-wrap {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-    .app-icon {
-      width: 44px;
-      height: 44px;
+
+    .card-top { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 12px; }
+    .svc-icon {
+      width: 44px; height: 44px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
       border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       font-size: 22px;
-    }
-    .app-name {
-      font-size: 17px;
-      font-weight: 700;
-      letter-spacing: -0.2px;
-    }
-    .app-tag {
-      font-size: 11px;
-      font-weight: 600;
-      padding: 3px 8px;
-      border-radius: 6px;
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-    }
-    .app-desc {
-      font-size: 13px;
-      line-height: 1.45;
-      color: var(--text-muted);
-    }
-    .app-btn {
-      width: 100%;
-      padding: 12px;
-      border-radius: 12px;
-      font-size: 14px;
-      font-weight: 700;
-      text-align: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      transition: all 0.15s ease;
-    }
-    .btn-verbum {
-      background: linear-gradient(135deg, #0284c7, #0369a1);
-      color: #fff;
-      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3);
-    }
-    .btn-foldwink {
-      background: linear-gradient(135deg, #ea580c, #c2410c);
-      color: #fff;
-      box-shadow: 0 4px 14px rgba(234, 88, 12, 0.3);
-    }
-    .btn-neutral {
-      background: rgba(255, 255, 255, 0.08);
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      flex-shrink: 0;
     }
 
-    /* Bottom Tab Bar */
-    .tabbar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 75px;
-      background: rgba(10, 12, 18, 0.92);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+    .svc-meta h3 { font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+    .svc-meta p { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+
+    .card-actions {
+      display: flex; gap: 8px; margin-top: 14px; padding-top: 12px;
       border-top: 1px solid var(--card-border);
+    }
+
+    .btn {
+      flex: 1;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      transition: all 0.15s;
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #0284c7, #2563eb);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+    }
+    .btn-game-foldwink {
+      background: linear-gradient(135deg, #ea580c, #c2410c);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(234, 88, 12, 0.3);
+    }
+    .btn-game-creep {
+      background: linear-gradient(135deg, #059669, #10b981);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+    .btn-nullfield {
+      background: #ccff00;
+      color: #000;
+      font-weight: 800;
+      box-shadow: 0 4px 14px rgba(204, 255, 0, 0.35);
+    }
+    .btn-secondary {
+      background: rgba(255,255,255,0.06);
+      color: var(--text-main);
+      border: 1px solid var(--card-border);
+    }
+
+    /* iOS Bottom Navigation Tab Bar */
+    .ios-tab-bar {
+      position: fixed;
+      bottom: calc(env(safe-area-inset-bottom, 8px) + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 20px);
+      max-width: 500px;
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 26px;
+      padding: 6px 8px;
       display: flex;
-      align-items: center;
       justify-content: space-around;
-      padding: 0 10px 15px;
-      z-index: 100;
+      align-items: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+      z-index: 999;
     }
     .tab-item {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 4px;
+      gap: 2px;
       color: var(--text-muted);
       text-decoration: none;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 600;
-      padding: 6px 12px;
-      border-radius: 12px;
-      transition: all 0.15s ease;
+      padding: 4px 6px;
+      border-radius: 10px;
+      transition: all 0.15s;
     }
-    .tab-item.active {
+    .tab-item i { font-size: 16px; }
+    .tab-item.active, .tab-item:hover {
       color: var(--accent);
+      background: rgba(56, 189, 248, 0.12);
     }
-    .tab-icon {
-      font-size: 20px;
-    }
+    .tab-item.nullfield-tab { color: #ccff00; }
   </style>
 </head>
 <body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo-box">⚡</div>
+        <div>
+          <h1>evseev.site</h1>
+          <p>Vladimir Home Hub · Ryzen 8845HS · 32GB</p>
+        </div>
+      </div>
+      <div class="status-badge">
+        <span class="status-dot"></span>
+        Online
+      </div>
+    </header>
 
-  <header>
-    <div class="profile-info">
-      <div class="avatar">VE</div>
-      <div>
-        <div class="profile-title">evseev.site</div>
-        <div class="profile-subtitle">Владимир Евсеев</div>
+    <!-- Hardware Summary -->
+    <div class="telemetry-grid">
+      <div class="tele-card">
+        <div class="tele-title"><span>CPU Server</span><span>8845HS</span></div>
+        <div class="tele-value">8 Cores</div>
+        <div class="tele-sub">16 Threads · DDR5</div>
+      </div>
+      <div class="tele-card">
+        <div class="tele-title"><span>Хранилище D:</span><span>Seagate 8TB</span></div>
+        <div class="tele-value">7.5 TB</div>
+        <div class="tele-sub">27 959 Медиа · Архив</div>
+      </div>
+      <div class="tele-card">
+        <div class="tele-title"><span>Библиотека</span><span>Флибуста</span></div>
+        <div class="tele-value">600 000+</div>
+        <div class="tele-sub">Книг · EPUB / FB2 / OPDS</div>
       </div>
     </div>
-    <div class="status-badge">
-      <span class="status-dot"></span>
-      Online
+
+    <!-- Section 1: Games -->
+    <div class="section-header">
+      <h2>🎮 Игры и Интерактивные Приложения</h2>
+      <span>Web Apps</span>
     </div>
-  </header>
 
-  <main>
-    <div class="section-title">🎙️ Голосовой Движок & Заметки</div>
-
-    <a href="/verbum/" class="app-card">
-      <div class="app-card-top">
-        <div class="app-icon-wrap">
-          <div class="app-icon" style="background: rgba(14, 165, 233, 0.15); color: #38bdf8;">🎙️</div>
-          <div>
-            <div class="app-name">Verbum Телефон-Конспектатор</div>
-            <div class="profile-subtitle">Live AI Transcription</div>
+    <div class="services-grid">
+      <!-- Foldwink -->
+      <div class="service-card" style="border-color: rgba(249, 115, 22, 0.3);">
+        <div class="card-top">
+          <div class="svc-icon" style="background: rgba(249, 115, 22, 0.15); color: #fb923c;">🎲</div>
+          <div class="svc-meta">
+            <h3>Foldwink (Фолдвинкл v0.8.2)</h3>
+            <p>Логическая игра-головоломка 4x4 на ассоциации. 100+ русских и немецких уровней, звуки и анимации.</p>
           </div>
         </div>
-        <span class="app-tag" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8;">Active</span>
+        <div class="card-actions">
+          <a href="/games/foldwink/" class="btn btn-game-foldwink">🕹️ Играть в Foldwink</a>
+        </div>
       </div>
-      <div class="app-desc">
-        Говорите в микрофон iPhone — движок мгновенно расшифровывает русскую и английскую речь и собирает структурированные Markdown-конспекты.
-      </div>
-      <div class="app-btn btn-verbum">
-        Открыть Телефон-Конспектатор ➔
-      </div>
-    </a>
 
-    <div class="section-title">🕹️ Игры & Приложения</div>
-
-    <a href="/games/foldwink/" class="app-card">
-      <div class="app-card-top">
-        <div class="app-icon-wrap">
-          <div class="app-icon" style="background: rgba(249, 115, 22, 0.15); color: #fb923c;">🎲</div>
-          <div>
-            <div class="app-name">Foldwink v0.8.2</div>
-            <div class="profile-subtitle">Word Puzzle (RU / EN / DE)</div>
+      <!-- ScreenCreep -->
+      <div class="service-card" style="border-color: rgba(16, 185, 129, 0.3);">
+        <div class="card-top">
+          <div class="svc-icon" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">🧬</div>
+          <div class="svc-meta">
+            <h3>ScreenCreep (Bio-Digital Clicker)</h3>
+            <p>Процедурная эволюция на PixiJS + Web Audio ASMR: комбо, мутации Session DNA и престиж-споруляция.</p>
           </div>
         </div>
-        <span class="app-tag" style="background: rgba(249, 115, 22, 0.15); color: #fb923c;">Updated</span>
+        <div class="card-actions">
+          <a href="/games/screencreep/" class="btn btn-game-creep">🧬 Играть в ScreenCreep</a>
+        </div>
       </div>
-      <div class="app-desc">
-        Логическая головоломка 4x4 на ассоциации слов. 100+ уровней с русскими терминами, анимациями и звуковыми эффектами.
-      </div>
-      <div class="app-btn btn-foldwink">
-        Играть в Foldwink ➔
-      </div>
-    </a>
 
-    <div class="section-title">🌌 Проекты & Ссылки</div>
-
-    <a href="https://neural-void.com" target="_blank" class="app-card">
-      <div class="app-card-top">
-        <div class="app-icon-wrap">
-          <div class="app-icon" style="background: rgba(168, 85, 247, 0.15); color: #c084fc;">🌌</div>
-          <div>
-            <div class="app-name">Neural Void</div>
-            <div class="profile-subtitle">neural-void.com</div>
+      <!-- NULL FIELD -->
+      <div class="service-card" style="border-color: rgba(204, 255, 0, 0.3); background: rgba(16, 26, 18, 0.85);">
+        <div class="card-top">
+          <div class="svc-icon" style="background: rgba(204, 255, 0, 0.15); color: #ccff00;">🧭</div>
+          <div class="svc-meta">
+            <h3 style="color: #ccff00;">NULL FIELD (Echolock Protocol)</h3>
+            <p>Аудио-радарный киберпанк триллер. Слушай импульсы, ориентируйся по звуку и очищай аномалии.</p>
           </div>
         </div>
-        <span class="app-tag" style="background: rgba(168, 85, 247, 0.15); color: #c084fc;">Official</span>
+        <div class="card-actions">
+          <a href="https://neural-void.com" class="btn btn-nullfield">⚡ Играть в NULL FIELD</a>
+        </div>
       </div>
-      <div class="app-desc">
-        Официальный портал и витрина проектов студии Neural Void.
-      </div>
-      <div class="app-btn btn-neutral">
-        Перейти на neural-void.com ➔
-      </div>
-    </a>
-  </main>
+    </div>
 
-  <nav class="tabbar">
-    <a href="/" class="tab-item active">
-      <span class="tab-icon">🏠</span>
-      <span>Главная</span>
-    </a>
-    <a href="/verbum/" class="tab-item">
-      <span class="tab-icon">🎙️</span>
-      <span>Verbum</span>
-    </a>
-    <a href="/games/foldwink/" class="tab-item">
-      <span class="tab-icon">🎲</span>
-      <span>Foldwink</span>
-    </a>
-    <a href="https://neural-void.com" class="tab-item">
-      <span class="tab-icon">🌌</span>
-      <span>Neural Void</span>
-    </a>
+    <!-- Section 2: Core Media & Storage -->
+    <div class="section-header">
+      <h2>📚 Книги, Фото & Голосовой Движок</h2>
+      <span>Домашние Архивы</span>
+    </div>
+
+    <div class="services-grid">
+      <!-- Verbum -->
+      <div class="service-card" style="border-color: rgba(14, 165, 233, 0.3);">
+        <div class="card-top">
+          <div class="svc-icon" style="background: rgba(14, 165, 233, 0.15); color: #38bdf8;">🎙️</div>
+          <div class="svc-meta">
+            <h3>Verbum — Телефон-Конспектатор</h3>
+            <p>Локальная AI-диктовка, расшифровка речи с микрофона iPhone в реальном времени и Markdown-конспекты.</p>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="/verbum/" class="btn btn-primary">🎙️ Открыть Конспектатор</a>
+        </div>
+      </div>
+
+      <!-- PhotoHub -->
+      <div class="service-card" style="border-color: rgba(56, 189, 248, 0.3);">
+        <div class="card-top">
+          <div class="svc-icon" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8;">📷</div>
+          <div class="svc-meta">
+            <h3>PhotoHub (Медиаархив 8TB)</h3>
+            <p>27 959 фото и видео (2003–2020), альбомы по годам, хронологическая лента и нейрореставрация старых снимков.</p>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="http://192.168.178.118:8080/photos" class="btn btn-primary">📷 Открыть PhotoHub</a>
+        </div>
+      </div>
+
+      <!-- Flibusta Library -->
+      <div class="service-card" style="border-color: rgba(129, 140, 248, 0.3);">
+        <div class="card-top">
+          <div class="svc-icon" style="background: rgba(129, 140, 248, 0.15); color: #818cf8;">📚</div>
+          <div class="svc-meta">
+            <h3>Флибуста & Web Reader</h3>
+            <p>600 000+ книг на русском и иностранных языках. Поиск по авторам, встроенная читалка и OPDS-сервер.</p>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="http://192.168.178.118:8080/library" class="btn btn-primary">📖 Открыть читалку</a>
+        </div>
+      </div>
+
+      <!-- Neural Void -->
+      <div class="service-card" style="border-color: rgba(168, 85, 247, 0.3);">
+        <div class="card-top">
+          <div class="svc-icon" style="background: rgba(168, 85, 247, 0.15); color: #c084fc;">🌌</div>
+          <div class="svc-meta">
+            <h3>Neural Void Studio</h3>
+            <p>Официальный портал и витрина проектов студии neural-void.com.</p>
+          </div>
+        </div>
+        <div class="card-actions">
+          <a href="https://neural-void.com" target="_blank" class="btn btn-secondary">🌌 neural-void.com</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- iOS Bottom Navigation Tab Bar -->
+  <nav class="ios-tab-bar">
+    <a href="/" class="tab-item active"><i class="fa-solid fa-house"></i><span>Хаб</span></a>
+    <a href="/games/foldwink/" class="tab-item"><i class="fa-solid fa-dice"></i><span>Foldwink</span></a>
+    <a href="/games/screencreep/" class="tab-item"><i class="fa-solid fa-ghost"></i><span>Creep</span></a>
+    <a href="/verbum/" class="tab-item"><i class="fa-solid fa-microphone"></i><span>Verbum</span></a>
+    <a href="http://192.168.178.118:8080/photos" class="tab-item"><i class="fa-solid fa-images"></i><span>Фото</span></a>
+    <a href="http://192.168.178.118:8080/library" class="tab-item"><i class="fa-solid fa-book-open"></i><span>Книги</span></a>
   </nav>
-
 </body>
 </html>
