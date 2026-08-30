@@ -325,7 +325,29 @@
       </div>
     </div>
 
-    <!-- Section 2: Core Media & Storage -->
+    <!-- Section 2: ENCLAVR Intelligence Swarm -->
+    <div class="section-header">
+      <h2>🤖 ENCLAVR Swarm & Облачные Агенты</h2>
+      <span>Google Cloud 24/7 • 08:00 & 21:00 CET</span>
+    </div>
+
+    <div class="services-grid">
+      <div class="service-card" style="border-color: rgba(99, 102, 241, 0.35); background: linear-gradient(180deg, rgba(99, 102, 241, 0.06) 0%, rgba(13, 18, 31, 0.7) 100%);">
+        <div class="card-top">
+          <div class="svc-icon" style="background: rgba(99, 102, 241, 0.15); color: #818cf8;">🤖</div>
+          <div class="svc-meta">
+            <h3>ENCLAVR Daily Strategic Radar</h3>
+            <p>4 автономных агента (Tech, Legal, DATEV Market, Synthesizer) собирают альфу по MCP, TEE, KI-MIG и § 203 StGB каждый день в 08:00 и 21:00 CET.</p>
+          </div>
+        </div>
+        <div class="card-actions" style="display:flex; gap:8px;">
+          <a href="#" class="btn btn-primary hub-link-agents" style="flex:1;">🤖 7 Облачных Агентов</a>
+          <a href="#" class="btn btn-secondary hub-link-briefing" style="flex:1;">📑 Читать Дайджест</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 3: Core Media & Storage -->
     <div class="section-header">
       <h2>📚 Книги, Фото & Голосовой Движок</h2>
       <span>Домашние Архивы</span>
@@ -393,6 +415,7 @@
   <!-- iOS Bottom Navigation Tab Bar -->
   <nav class="ios-tab-bar">
     <a href="/" class="tab-item active"><i class="fa-solid fa-house"></i><span>Хаб</span></a>
+    <a href="#" class="tab-item hub-link-agents"><i class="fa-solid fa-robot"></i><span>Агенты</span></a>
     <a href="/games/foldwink/" class="tab-item"><i class="fa-solid fa-dice"></i><span>Foldwink</span></a>
     <a href="/games/screencreep/" class="tab-item"><i class="fa-solid fa-ghost"></i><span>Creep</span></a>
     <a href="/verbum/" class="tab-item"><i class="fa-solid fa-microphone"></i><span>Verbum</span></a>
@@ -479,6 +502,105 @@
         <div class="results-empty">
           <p>⚡ Загрузка архива 2003–2020 из Google Cloud...</p>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Agents & Cloud Services Dashboard Modal -->
+  <div id="agents-modal" class="modal-overlay" style="display:none;">
+    <div class="modal-card" style="max-width: 780px;">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <div class="svc-icon" style="background: rgba(99, 102, 241, 0.15); color: #818cf8; width:36px; height:36px; font-size:18px;">🤖</div>
+          <div>
+            <h3 style="font-size: 16px; font-weight: 700; color: #fff;">Облачные Агенты & Службы (Google Cloud 24/7)</h3>
+            <p style="font-size: 11px; color: #94a3b8; font-family: 'JetBrains Mono', monospace;">sites-mcp-cloud-node • 08:00 & 21:00 CET Swarm</p>
+          </div>
+        </div>
+        <button id="close-agents-modal" class="modal-close-btn">&times;</button>
+      </div>
+
+      <!-- Quick Actions Header -->
+      <div style="padding: 12px 20px; background: rgba(255, 255, 255, 0.02); border-bottom: 1px solid rgba(255, 255, 255, 0.06); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+        <div style="font-size: 12px; color: #cbd5e1;">
+          <span style="color: #10b981;">● 7 служб активно</span> · Следующий запуск: <strong style="color: #818cf8;">21:00 CET</strong>
+        </div>
+        <button onclick="openBriefingModal()" class="btn btn-secondary" style="padding: 6px 14px; font-size: 12px;">📑 Читать Дайджест ENCLAVR</button>
+      </div>
+
+      <!-- Agents Grid Container -->
+      <div id="agents-list" class="results-container" style="gap: 8px; padding-top: 12px;">
+        <div class="results-empty"><p>⚡ Загрузка телеметрии агентов...</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Agent Detail & Telemetry Modal -->
+  <div id="agent-detail-modal" class="modal-overlay" style="display:none; z-index: 10000;">
+    <div class="modal-card" style="max-width: 580px;">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <div id="detail-agent-icon" class="svc-icon" style="background: rgba(99, 102, 241, 0.15); color: #818cf8; width:36px; height:36px; font-size:18px;">🔬</div>
+          <div>
+            <h3 id="detail-agent-name" style="font-size: 15px; font-weight: 700; color: #fff;">Agent Name</h3>
+            <p id="detail-agent-category" style="font-size: 11px; color: #94a3b8; font-family: 'JetBrains Mono', monospace;">Category</p>
+          </div>
+        </div>
+        <button id="close-detail-modal" class="modal-close-btn">&times;</button>
+      </div>
+
+      <div class="results-container" style="padding: 16px 20px; gap: 14px;">
+        <!-- Metrics Grid -->
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+          <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 10px; padding: 10px;">
+            <div style="font-size: 10px; color: #64748b; font-family: 'JetBrains Mono'; text-transform: uppercase;">Расписание</div>
+            <div id="detail-schedule" style="font-size: 13px; font-weight: 700; color: #818cf8; margin-top: 2px;">08:00, 21:00 CET</div>
+          </div>
+          <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 10px; padding: 10px;">
+            <div style="font-size: 10px; color: #64748b; font-family: 'JetBrains Mono'; text-transform: uppercase;">Статус</div>
+            <div id="detail-status" style="font-size: 13px; font-weight: 700; color: #10b981; margin-top: 2px;">ACTIVE / READY</div>
+          </div>
+        </div>
+
+        <!-- Latest Finding Box -->
+        <div>
+          <div style="font-size: 11px; font-weight: 700; color: #cbd5e1; margin-bottom: 6px; text-transform: uppercase; font-family: 'JetBrains Mono';">Главный найденный инсайт</div>
+          <div id="detail-finding" style="background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99, 102, 241, 0.25); border-radius: 10px; padding: 12px; font-size: 13px; color: #fff; line-height: 1.4;">
+            Finding text
+          </div>
+        </div>
+
+        <!-- Log Summary -->
+        <div>
+          <div style="font-size: 11px; font-weight: 700; color: #64748b; margin-bottom: 6px; text-transform: uppercase; font-family: 'JetBrains Mono';">Лог сканирования</div>
+          <div id="detail-logs" style="background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 10px; padding: 10px; font-size: 12px; color: #94a3b8; font-family: 'JetBrains Mono', monospace;">
+            Log summary
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div style="display: flex; gap: 10px; margin-top: 4px;">
+          <button id="trigger-agent-btn" class="btn btn-primary" style="flex: 1; padding: 10px;">⚡ Запустить разведку прямо сейчас</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ENCLAVR Daily Briefing Reader Modal -->
+  <div id="briefing-modal" class="modal-overlay" style="display:none; z-index: 10000;">
+    <div class="modal-card" style="max-width: 680px;">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <div class="svc-icon" style="background: rgba(99, 102, 241, 0.15); color: #818cf8; width:36px; height:36px; font-size:18px;">📑</div>
+          <div>
+            <h3 style="font-size: 15px; font-weight: 700; color: #fff;">ENCLAVR Daily Strategic Briefing</h3>
+            <p id="briefing-date-sub" style="font-size: 11px; color: #94a3b8; font-family: 'JetBrains Mono', monospace;">2-Minute Decision Digest</p>
+          </div>
+        </div>
+        <button id="close-briefing-modal" class="modal-close-btn">&times;</button>
+      </div>
+      <div id="briefing-content" class="results-container" style="padding: 18px 22px; font-size: 13px; color: #cbd5e1; line-height: 1.6; white-space: pre-wrap; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+        Загрузка отчёта...
       </div>
     </div>
   </div>
@@ -843,6 +965,161 @@
         grid.innerHTML = html;
       } catch(err) {
         grid.innerHTML = `<div class="results-empty" style="color:#ef4444;"><p>Ошибка загрузки: ${err.message}</p></div>`;
+      }
+    };
+
+    // --- Agents Dashboard & Strategic Radar Engine ---
+    let cachedAgents = [];
+    let currentSelectedAgent = null;
+
+    const agentsModal = document.getElementById('agents-modal');
+    const agentDetailModal = document.getElementById('agent-detail-modal');
+    const briefingModal = document.getElementById('briefing-modal');
+
+    document.querySelectorAll('.hub-link-agents').forEach(el => {
+      el.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (agentsModal) {
+          agentsModal.style.display = 'flex';
+          loadAgentsDashboard();
+        }
+      });
+    });
+
+    document.querySelectorAll('.hub-link-briefing').forEach(el => {
+      el.addEventListener('click', function(e) {
+        e.preventDefault();
+        openBriefingModal();
+      });
+    });
+
+    document.getElementById('close-agents-modal')?.addEventListener('click', () => {
+      if (agentsModal) agentsModal.style.display = 'none';
+    });
+    document.getElementById('close-detail-modal')?.addEventListener('click', () => {
+      if (agentDetailModal) agentDetailModal.style.display = 'none';
+    });
+    document.getElementById('close-briefing-modal')?.addEventListener('click', () => {
+      if (briefingModal) briefingModal.style.display = 'none';
+    });
+
+    agentsModal?.addEventListener('click', (e) => {
+      if (e.target === agentsModal) agentsModal.style.display = 'none';
+    });
+    agentDetailModal?.addEventListener('click', (e) => {
+      if (e.target === agentDetailModal) agentDetailModal.style.display = 'none';
+    });
+    briefingModal?.addEventListener('click', (e) => {
+      if (e.target === briefingModal) briefingModal.style.display = 'none';
+    });
+
+    async function loadAgentsDashboard() {
+      const container = document.getElementById('agents-list');
+      if (!container) return;
+      container.innerHTML = '<div class="results-empty"><p>⚡ Опрос облачных агентов...</p></div>';
+
+      try {
+        const resp = await fetch(`${CLOUD_API_BASE}/api/agents/status`);
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        const data = await resp.json();
+        cachedAgents = data.agents || [];
+
+        if (cachedAgents.length === 0) {
+          container.innerHTML = '<div class="results-empty"><p>Нет активных агентов</p></div>';
+          return;
+        }
+
+        let html = '';
+        cachedAgents.forEach(a => {
+          const isOnline = a.status.includes('ACTIVE') || a.status.includes('ONLINE');
+          const dotColor = isOnline ? '#10b981' : '#38bdf8';
+          const icon = a.name.split(' ')[0] || '🤖';
+          
+          html += `
+            <div class="book-item" style="cursor: pointer; display:flex; justify-content:space-between; align-items:center; padding:12px 16px;" onclick="openAgentDetail('${a.agent_id}')">
+              <div style="display:flex; align-items:center; gap:12px;">
+                <div class="svc-icon" style="background: rgba(255, 255, 255, 0.05); color: #fff; width:34px; height:34px; font-size:16px;">${icon}</div>
+                <div>
+                  <div style="font-size:14px; font-weight:700; color:#fff;">${a.name}</div>
+                  <div style="font-size:11px; color:#818cf8; font-family:'JetBrains Mono'; margin-top:2px;">
+                    ${a.category} · Расписание: ${a.schedule}
+                  </div>
+                  <div style="font-size:11px; color:#94a3b8; margin-top:4px; max-width:480px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                    💡 ${a.last_finding || a.log_summary || ''}
+                  </div>
+                </div>
+              </div>
+              <div style="text-align:right; flex-shrink:0;">
+                <span class="badge-fmt" style="background:rgba(16,185,129,0.15); color:${dotColor};">
+                  ● ${a.status}
+                </span>
+                <div style="font-size:10px; color:#64748b; font-family:'JetBrains Mono'; margin-top:4px;">
+                  Детали →
+                </div>
+              </div>
+            </div>
+          `;
+        });
+        container.innerHTML = html;
+      } catch(err) {
+        container.innerHTML = `<div class="results-empty" style="color:#ef4444;"><p>Ошибка связи с агентами: ${err.message}</p></div>`;
+      }
+    }
+
+    window.openAgentDetail = function(agentId) {
+      const agent = cachedAgents.find(a => a.agent_id === agentId);
+      if (!agent || !agentDetailModal) return;
+      currentSelectedAgent = agent;
+
+      document.getElementById('detail-agent-name').textContent = agent.name;
+      document.getElementById('detail-agent-category').textContent = `${agent.category} · ${agent.agent_id}`;
+      document.getElementById('detail-schedule').textContent = agent.schedule;
+      document.getElementById('detail-status').textContent = `${agent.status} (Следующий запуск: ${agent.next_run})`;
+      document.getElementById('detail-finding').textContent = agent.last_finding || 'Сбор информации в фоновом режиме...';
+      document.getElementById('detail-logs').textContent = agent.log_summary || 'Логи в норме. 0 аномалий.';
+
+      agentDetailModal.style.display = 'flex';
+    };
+
+    document.getElementById('trigger-agent-btn')?.addEventListener('click', async function() {
+      if (!currentSelectedAgent) return;
+      const btn = this;
+      btn.disabled = true;
+      btn.textContent = '⏳ Запуск...';
+
+      try {
+        const resp = await fetch(`${CLOUD_API_BASE}/api/agents/trigger/${currentSelectedAgent.agent_id}`, { method: 'POST' });
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        btn.textContent = '✅ Разведка успешно запущена!';
+        setTimeout(() => {
+          btn.disabled = false;
+          btn.textContent = '⚡ Запустить разведку прямо сейчас';
+          loadAgentsDashboard();
+        }, 2000);
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = '❌ Ошибка запуска: ' + err.message;
+      }
+    });
+
+    window.openBriefingModal = async function() {
+      if (!briefingModal) return;
+      briefingModal.style.display = 'flex';
+      const container = document.getElementById('briefing-content');
+      container.textContent = '⚡ Загрузка свежего дайджеста из Google Cloud...';
+
+      try {
+        const resp = await fetch(`${CLOUD_API_BASE}/api/agents/radar/latest`);
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        const data = await resp.json();
+        
+        if (data.raw_markdown) {
+          container.textContent = data.raw_markdown;
+        } else if (data.action_today) {
+          container.textContent = `Score: ${data.score}/100\n\nДЕЙСТВИЕ СЕГОДНЯ:\n${data.action_today}\n\nХОЛОДНЫЙ ХУК:\n${data.cold_hook}\n\nДЛЯ СИНКА С МАКСОМ:\n${data.max_sync_topic}`;
+        }
+      } catch(err) {
+        container.textContent = 'Ошибка загрузки дайджеста: ' + err.message;
       }
     };
   </script>
