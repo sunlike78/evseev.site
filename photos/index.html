@@ -253,12 +253,18 @@
 
   <script>
     const API_BASE = 'https://34.27.195.78.sslip.io';
+    const urlParams = new URLSearchParams(window.location.search);
+    const accessKey = urlParams.get('k') || '';
     let currentYear = '';
     let loadedPhotos = [];
 
+    function getAuthQuery() {
+      return accessKey ? `&k=${encodeURIComponent(accessKey)}` : '';
+    }
+
     async function loadYears() {
       try {
-        const resp = await fetch(`${API_BASE}/api/photos/years`);
+        const resp = await fetch(`${API_BASE}/api/photos/years${accessKey ? '?k=' + encodeURIComponent(accessKey) : ''}`);
         if (!resp.ok) return;
         const data = await resp.json();
         if (data.total_media) {
@@ -272,7 +278,8 @@
       grid.innerHTML = '<div class="empty-state"><div class="spinner"></div><p>Загрузка снимков из Google Cloud...</p></div>';
 
       try {
-        const url = year ? `${API_BASE}/api/photos/timeline?year=${year}&limit=60` : `${API_BASE}/api/photos/timeline?limit=60`;
+        const baseQuery = year ? `year=${encodeURIComponent(year)}&limit=60` : `limit=60`;
+        const url = `${API_BASE}/api/photos/timeline?${baseQuery}${getAuthQuery()}`;
         const resp = await fetch(url);
         if (!resp.ok) throw new Error('HTTP ' + resp.status);
         const data = await resp.json();
@@ -285,11 +292,11 @@
 
         let html = '';
         loadedPhotos.forEach((p, idx) => {
-          // Photo card with smooth background gradient and cloud thumbnail
-          const thumbUrl = `${API_BASE}/api/photos/thumb/${p.id}`;
+          const thumbUrl = `${API_BASE}/api/photos/thumb/${p.id}${accessKey ? '?k=' + encodeURIComponent(accessKey) : ''}`;
           html += `
             <div class="photo-item" onclick="openLightbox(${idx})">
-              <div style="width:100%; height:100%; background: linear-gradient(135deg, #1e293b, #0f172a); display:flex; align-items:center; justify-content:center; color:#64748b; font-size:24px;">📷</div>
+              <img src="${thumbUrl}" class="photo-img" loading="lazy" alt="${p.filename || 'Photo'}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+              <div style="width:100%; height:100%; display:none; background: linear-gradient(135deg, #1e293b, #0f172a); align-items:center; justify-content:center; color:#64748b; font-size:24px;">📷</div>
               <div class="photo-year-tag">${p.year || 'Archive'}</div>
             </div>
           `;
@@ -315,7 +322,7 @@
       const img = document.getElementById('lightbox-img');
       const meta = document.getElementById('lightbox-meta');
 
-      img.src = `${API_BASE}/api/photos/thumb/${photo.id}`;
+      img.src = `${API_BASE}/api/photos/thumb/${photo.id}${accessKey ? '?k=' + encodeURIComponent(accessKey) : ''}`;
       meta.textContent = `${photo.filename || ''} · Год: ${photo.year || '—'} · Сезон: ${photo.season || '—'}`;
       lb.style.display = 'flex';
     }
