@@ -401,41 +401,65 @@
   </nav>
 
   <script>
-    // Smart Adaptive Connection Resolver (Local Wi-Fi Gigabit vs Global HTTPS Tunnel)
+    // Fast Non-Blocking Connection & Home Server Status Resolver
     (async function() {
       const token = 'GT342EU06RGK1Csaxx-Z1g';
       try { localStorage.setItem('hub_auth', token); } catch(e){}
 
       const statusBadge = document.querySelector('.status-badge');
-      
-      // Default fallback URLs
       let photoTarget = `/photos/?k=${token}`;
       let booksTarget = `/books?k=${token}`;
-      let isLocal = window.location.hostname === '192.168.178.118' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      let isServerOnline = false;
+      
+      const isLocal = window.location.hostname === '192.168.178.118' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
       if (isLocal) {
         if (statusBadge) statusBadge.innerHTML = '<span class="status-dot" style="background:#10b981;"></span> Домашний Wi-Fi';
+        isServerOnline = true;
       } else {
-        // We are on evseev.site (external / HTTPS)
-        // 1. Fetch live active tunnel endpoint from hub_status.json
+        // External HTTPS (evseev.site)
         try {
-          const resp = await fetch('/hub_status.json?t=' + Date.now());
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 1200);
+          const resp = await fetch('/hub_status.json?t=' + Date.now(), { signal: controller.signal });
+          clearTimeout(timeoutId);
+          
           if (resp.ok) {
             const data = await resp.json();
-            if (data && data.photos_url && data.books_url) {
+            if (data && data.online && data.photos_url && data.books_url) {
               photoTarget = data.photos_url;
               booksTarget = data.books_url;
-              if (statusBadge) statusBadge.innerHTML = '<span class="status-dot" style="background:#38bdf8; box-shadow:0 0 8px #38bdf8;"></span> HTTPS Вне дома';
+              isServerOnline = true;
+              if (statusBadge) statusBadge.innerHTML = '<span class="status-dot" style="background:#38bdf8; box-shadow:0 0 8px #38bdf8;"></span> Онлайн (Домашний ПК)';
             }
           }
         } catch(e) {
-          console.log('Using relative routing');
+          console.log('Home server is offline or unreachable');
+        }
+
+        if (!isServerOnline && statusBadge) {
+          statusBadge.innerHTML = '<span class="status-dot" style="background:#94a3b8; box-shadow:none;"></span> Домашний ПК спит';
+          statusBadge.style.color = '#94a3b8';
+          statusBadge.style.borderColor = 'rgba(148, 163, 184, 0.3)';
+          statusBadge.style.background = 'rgba(148, 163, 184, 0.1)';
         }
       }
 
-      // Apply resolved URLs to all buttons and tab bar items
-      document.querySelectorAll('.hub-link-photo').forEach(el => { el.href = photoTarget; });
-      document.querySelectorAll('.hub-link-books').forEach(el => { el.href = booksTarget; });
+      // Apply resolved URLs
+      document.querySelectorAll('.hub-link-photo').forEach(el => { 
+        el.href = photoTarget; 
+        if (!isServerOnline && !isLocal) {
+          el.addEventListener('click', function(e) {
+            if (!isServerOnline) {
+              // Graceful notification without blocking
+              console.log('Opening home storage tunnel or fallback');
+            }
+          });
+        }
+      });
+      document.querySelectorAll('.hub-link-books').forEach(el => { 
+        el.href = booksTarget; 
+      });
     })();
   </script>
 </body>
