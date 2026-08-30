@@ -441,6 +441,48 @@
     </div>
   </div>
 
+  <!-- PhotoHub Cloud Timeline Modal (24/7 Google Cloud Always Free) -->
+  <div id="photos-modal" class="modal-overlay" style="display:none;">
+    <div class="modal-card" style="max-width: 800px;">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <div class="svc-icon" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; width:36px; height:36px; font-size:18px;">📷</div>
+          <div>
+            <h3 style="font-size: 16px; font-weight: 700; color: #fff;">PhotoHub Cloud Gallery (27 639 медиа)</h3>
+            <p style="font-size: 11px; color: #94a3b8; font-family: 'JetBrains Mono', monospace;">Google Cloud • Хроника 2003–2020 24/7</p>
+          </div>
+        </div>
+        <button id="close-photos-modal" class="modal-close-btn">&times;</button>
+      </div>
+
+      <!-- Year Filter Chips -->
+      <div id="photo-year-chips" class="search-chips" style="padding: 12px 20px 8px;">
+        <span class="chip" onclick="loadPhotosYear('')">Все годы</span>
+        <span class="chip" onclick="loadPhotosYear('2020')">2020</span>
+        <span class="chip" onclick="loadPhotosYear('2019')">2019</span>
+        <span class="chip" onclick="loadPhotosYear('2018')">2018</span>
+        <span class="chip" onclick="loadPhotosYear('2017')">2017</span>
+        <span class="chip" onclick="loadPhotosYear('2016')">2016</span>
+        <span class="chip" onclick="loadPhotosYear('2011')">2011</span>
+        <span class="chip" onclick="loadPhotosYear('2010')">2010</span>
+        <span class="chip" onclick="loadPhotosYear('2009')">2009</span>
+        <span class="chip" onclick="loadPhotosYear('2008')">2008</span>
+        <span class="chip" onclick="loadPhotosYear('2007')">2007</span>
+        <span class="chip" onclick="loadPhotosYear('2006')">2006</span>
+        <span class="chip" onclick="loadPhotosYear('2005')">2005</span>
+        <span class="chip" onclick="loadPhotosYear('2004')">2004</span>
+        <span class="chip" onclick="loadPhotosYear('2003')">2003</span>
+      </div>
+
+      <!-- Photos Grid Area -->
+      <div id="photos-grid" class="results-container photo-grid-wrap">
+        <div class="results-empty">
+          <p>⚡ Загрузка архива 2003–2020 из Google Cloud...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <style>
     .modal-overlay {
       position: fixed;
@@ -584,6 +626,37 @@
       font-size: 10px;
       font-weight: 700;
     }
+    .photo-grid-wrap {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 8px;
+      padding: 10px 20px 20px;
+    }
+    .photo-card {
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.05);
+      aspect-ratio: 1;
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .photo-card:hover { transform: scale(1.03); }
+    .photo-thumb {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .photo-badge {
+      position: absolute;
+      bottom: 4px; right: 4px;
+      background: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      font-size: 9px;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 1px 4px;
+      border-radius: 4px;
+    }
   </style>
 
   <script>
@@ -633,8 +706,6 @@
 
       // Intercept Books Click to Open 24/7 Cloud Search Drawer
       const booksModal = document.getElementById('books-modal');
-      const closeBooksModal = document.getElementById('books-close');
-      
       document.querySelectorAll('.hub-link-books').forEach(el => {
         el.addEventListener('click', function(e) {
           e.preventDefault();
@@ -653,13 +724,32 @@
         if (e.target === booksModal) booksModal.style.display = 'none';
       });
 
-      // Photo Link
-      document.querySelectorAll('.hub-link-photo').forEach(el => { el.href = photoTarget; });
+      // Intercept Photo Click to Open 24/7 Cloud Gallery
+      const photosModal = document.getElementById('photos-modal');
+      document.querySelectorAll('.hub-link-photo').forEach(el => {
+        el.addEventListener('click', function(e) {
+          if (!isServerOnline && !isLocal) {
+            e.preventDefault();
+            if (photosModal) {
+              photosModal.style.display = 'flex';
+              loadPhotosYear('');
+            }
+          }
+        });
+      });
+
+      document.getElementById('close-photos-modal')?.addEventListener('click', () => {
+        if (photosModal) photosModal.style.display = 'none';
+      });
+
+      photosModal?.addEventListener('click', (e) => {
+        if (e.target === photosModal) photosModal.style.display = 'none';
+      });
     })();
 
     // Live Books Search Engine (Google Cloud Always-Free Backend)
     let searchDebounceTimer = null;
-    const CLOUD_SEARCH_URL = 'https://34.27.195.78.sslip.io/api/books/search';
+    const CLOUD_API_BASE = 'https://34.27.195.78.sslip.io';
 
     document.getElementById('books-search-input')?.addEventListener('input', function(e) {
       const q = e.target.value.trim();
@@ -686,7 +776,7 @@
       const spinner = document.getElementById('search-spinner');
 
       try {
-        const resp = await fetch(`${CLOUD_SEARCH_URL}?q=${encodeURIComponent(query)}&limit=30`);
+        const resp = await fetch(`${CLOUD_API_BASE}/api/books/search?q=${encodeURIComponent(query)}&limit=30`);
         if (!resp.ok) throw new Error('HTTP ' + resp.status);
         const data = await resp.json();
 
@@ -723,6 +813,38 @@
         resultsContainer.innerHTML = `<div class="results-empty" style="color:#ef4444;"><p>Ошибка поиска: ${err.message}</p></div>`;
       }
     }
+
+    // Photo Gallery Loader
+    window.loadPhotosYear = async function(year) {
+      const grid = document.getElementById('photos-grid');
+      if (!grid) return;
+      grid.innerHTML = '<div class="results-empty"><p>⚡ Загрузка фотографий из Google Cloud...</p></div>';
+
+      try {
+        const url = year ? `${CLOUD_API_BASE}/api/photos/timeline?year=${year}&limit=48` : `${CLOUD_API_BASE}/api/photos/timeline?limit=48`;
+        const resp = await fetch(url);
+        const data = await resp.json();
+
+        if (!data.photos || data.photos.length === 0) {
+          grid.innerHTML = '<div class="results-empty"><p>Фотографий за этот период не найдено.</p></div>';
+          return;
+        }
+
+        let html = '';
+        data.photos.forEach(p => {
+          const thumbUrl = `${CLOUD_API_BASE}/api/photos/thumb/${p.id}`;
+          html += `
+            <div class="photo-card" title="${p.filename || ''}">
+              <div style="width:100%; height:100%; background: linear-gradient(135deg, #1e293b, #0f172a); display:flex; align-items:center; justify-content:center; font-size:24px;">📷</div>
+              <div class="photo-badge">${p.year || ''}</div>
+            </div>
+          `;
+        });
+        grid.innerHTML = html;
+      } catch(err) {
+        grid.innerHTML = `<div class="results-empty" style="color:#ef4444;"><p>Ошибка загрузки: ${err.message}</p></div>`;
+      }
+    };
   </script>
 </body>
 </html>
