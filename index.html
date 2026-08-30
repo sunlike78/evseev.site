@@ -378,7 +378,7 @@
           </div>
         </div>
         <div class="card-actions">
-          <a href="/photos/?k=GT342EU06RGK1Csaxx-Z1g" class="btn btn-primary hub-link-photo">📷 Открыть PhotoHub</a>
+          <a href="/photos/" class="btn btn-primary hub-link-photo">📷 Открыть PhotoHub</a>
         </div>
       </div>
 
@@ -392,7 +392,7 @@
           </div>
         </div>
         <div class="card-actions">
-          <a href="/books?k=GT342EU06RGK1Csaxx-Z1g" class="btn btn-primary hub-link-books">📖 Открыть читалку</a>
+          <a href="/books/" class="btn btn-primary hub-link-books">📖 Открыть читалку</a>
         </div>
       </div>
 
@@ -419,8 +419,8 @@
     <a href="/games/foldwink/" class="tab-item"><i class="fa-solid fa-dice"></i><span>Foldwink</span></a>
     <a href="/games/screencreep/" class="tab-item"><i class="fa-solid fa-ghost"></i><span>Creep</span></a>
     <a href="/verbum/" class="tab-item"><i class="fa-solid fa-microphone"></i><span>Verbum</span></a>
-    <a href="/photos/?k=GT342EU06RGK1Csaxx-Z1g" class="tab-item hub-link-photo"><i class="fa-solid fa-images"></i><span>Фото</span></a>
-    <a href="#" class="tab-item hub-link-books"><i class="fa-solid fa-book-open"></i><span>Книги</span></a>
+    <a href="/photos/" class="tab-item hub-link-photo"><i class="fa-solid fa-images"></i><span>Фото</span></a>
+    <a href="/books/" class="tab-item hub-link-books"><i class="fa-solid fa-book-open"></i><span>Книги</span></a>
   </nav>
 
   <!-- Books Cloud Search Modal (24/7 Google Cloud Always Free) -->
@@ -788,8 +788,8 @@
       try { localStorage.setItem('hub_auth', token); } catch(e){}
 
       const statusBadge = document.querySelector('.status-badge');
-      let photoTarget = `/photos/?k=${token}`;
-      let booksTarget = `/books?k=${token}`;
+      let photoTarget = `/photos/`;
+      let booksTarget = `/books/`;
       let isServerOnline = false;
       
       const isLocal = window.location.hostname === '192.168.178.118' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';

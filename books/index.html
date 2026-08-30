@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Флибуста Cloud — 650 000+ Книг (24/7)</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #070a13;
+      --card-bg: rgba(255, 255, 255, 0.03);
+      --border: rgba(255, 255, 255, 0.08);
+      --accent: #818cf8;
+      --accent-glow: rgba(129, 140, 248, 0.25);
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(7, 10, 19, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+    }
+    .brand-icon {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      background: rgba(129, 140, 248, 0.15);
+      color: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+    .brand-text h1 { font-size: 16px; font-weight: 800; }
+    .brand-text p { font-size: 11px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
+    .back-btn {
+      color: #cbd5e1;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex; align-items: center; gap: 6px;
+      padding: 8px 14px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      transition: all 0.2s;
+    }
+    .back-btn:hover { background: rgba(255,255,255,0.08); color: #fff; }
+
+    .main-container {
+      max-width: 800px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .search-box-wrap {
+      position: relative;
+      margin-bottom: 12px;
+    }
+    .search-icon {
+      position: absolute;
+      left: 18px;
+      top: 16px;
+      color: var(--accent);
+      font-size: 16px;
+    }
+    .search-input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(129, 140, 248, 0.3);
+      border-radius: 14px;
+      padding: 14px 44px 14px 48px;
+      color: #fff;
+      font-size: 16px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .search-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 20px var(--accent-glow);
+      background: rgba(255, 255, 255, 0.08);
+    }
+    .spinner {
+      position: absolute;
+      right: 18px;
+      top: 16px;
+      width: 18px; height: 18px;
+      border: 2px solid rgba(255,255,255,0.2);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .search-chips {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      white-space: nowrap;
+      margin-bottom: 20px;
+      padding-bottom: 4px;
+    }
+    .chip {
+      font-size: 12px;
+      font-weight: 600;
+      background: rgba(129, 140, 248, 0.1);
+      color: #a5b4fc;
+      border: 1px solid rgba(129, 140, 248, 0.25);
+      padding: 6px 12px;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .chip:hover { background: rgba(129, 140, 248, 0.25); color: #fff; }
+
+    .results-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+    }
+    .book-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      transition: all 0.15s;
+    }
+    .book-item:hover {
+      background: rgba(129, 140, 248, 0.06);
+      border-color: rgba(129, 140, 248, 0.3);
+    }
+    .book-title { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .book-author { font-size: 13px; color: var(--accent); font-weight: 600; margin-bottom: 8px; }
+    .book-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .badge-fmt {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="/" class="brand">
+      <div class="brand-icon"><i class="fa-solid fa-book-open"></i></div>
+      <div class="brand-text">
+        <h1>Флибуста Cloud</h1>
+        <p>650 941 книга • FTS5 Поиск 24/7</p>
+      </div>
+    </a>
+    <a href="/" class="back-btn"><i class="fa-solid fa-arrow-left"></i> На главную</a>
+  </header>
+
+  <main class="main-container">
+    <div class="search-box-wrap">
+      <i class="fa-solid fa-magnifying-glass search-icon"></i>
+      <input type="text" id="books-input" class="search-input" placeholder="Поиск по каталогу 650 000+ книг..." autofocus>
+      <span id="search-spinner" class="spinner" style="display:none;"></span>
+    </div>
+
+    <div class="search-chips">
+      <span class="chip" onclick="searchFor('Пелевин')">Пелевин</span>
+      <span class="chip" onclick="searchFor('Стругацкие')">Стругацкие</span>
+      <span class="chip" onclick="searchFor('Достоевский')">Достоевский</span>
+      <span class="chip" onclick="searchFor('Булгаков')">Булгаков</span>
+      <span class="chip" onclick="searchFor('Азимов')">Азимов</span>
+      <span class="chip" onclick="searchFor('Лем')">Лем</span>
+      <span class="chip" onclick="searchFor('Сорокин')">Сорокин</span>
+    </div>
+
+    <div id="results-area" class="results-container">
+      <div class="empty-state">
+        <p>⚡ Введите автора или название книги для мгновенного FTS5 поиска в Google Cloud.</p>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const API_BASE = 'https://34.27.195.78.sslip.io';
+    let searchDebounceTimer = null;
+
+    document.getElementById('books-input')?.addEventListener('input', function(e) {
+      const q = e.target.value.trim();
+      clearTimeout(searchDebounceTimer);
+      if (q.length < 2) {
+        document.getElementById('results-area').innerHTML = '<div class="empty-state"><p>⚡ Введите автора или название книги.</p></div>';
+        return;
+      }
+      document.getElementById('search-spinner').style.display = 'inline-block';
+      searchDebounceTimer = setTimeout(() => performSearch(q), 250);
+    });
+
+    function searchFor(query) {
+      document.getElementById('books-input').value = query;
+      document.getElementById('search-spinner').style.display = 'inline-block';
+      performSearch(query);
+    }
+
+    async function performSearch(query) {
+      const container = document.getElementById('results-area');
+      const spinner = document.getElementById('search-spinner');
+
+      try {
+        const resp = await fetch(`${API_BASE}/api/books/search?q=${encodeURIComponent(query)}&limit=40`);
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        const data = await resp.json();
+
+        if (spinner) spinner.style.display = 'none';
+
+        if (!data.books || data.books.length === 0) {
+          container.innerHTML = `<div class="empty-state"><p>Ничего не найдено по запросу «${query}»</p></div>`;
+          return;
+        }
+
+        let html = `<div style="font-size:12px; color:#94a3b8; margin-bottom:8px; font-family:'JetBrains Mono';">Найдено: ${data.count} книг (${data.duration_ms} мс)</div>`;
+        data.books.forEach(b => {
+          const author = b.author ? b.author.replace(/,/g, ' ').trim() : 'Неизвестный автор';
+          const sizeKb = Math.round((b.size || 0) / 1024);
+          const ext = (b.ext || 'fb2').toUpperCase();
+          const series = b.series ? ` · <i>Серия: ${b.series}${b.ser_no ? ' #' + b.ser_no : ''}</i>` : '';
+
+          html += `
+            <div class="book-item">
+              <div class="book-title">${b.title || 'Без названия'}</div>
+              <div class="book-author">✍️ ${author}</div>
+              <div class="book-meta">
+                <span class="badge-fmt">${ext}</span>
+                <span>${sizeKb} KB</span>
+                ${b.date ? `<span>📅 ${b.date}</span>` : ''}
+                ${series}
+              </div>
+            </div>
+          `;
+        });
+        container.innerHTML = html;
+      } catch (err) {
+        if (spinner) spinner.style.display = 'none';
+        container.innerHTML = `<div class="empty-state" style="color:#ef4444;"><p>Ошибка поиска: ${err.message}</p></div>`;
+      }
+    }
+  </script>
+</body>
+</html>
