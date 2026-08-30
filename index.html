@@ -356,7 +356,7 @@
           </div>
         </div>
         <div class="card-actions">
-          <a href="http://192.168.178.118:8080/photos/?k=GT342EU06RGK1Csaxx-Z1g" class="btn btn-primary">📷 Открыть PhotoHub</a>
+          <a href="/photos/?k=GT342EU06RGK1Csaxx-Z1g" class="btn btn-primary hub-link-photo">📷 Открыть PhotoHub</a>
         </div>
       </div>
 
@@ -370,7 +370,7 @@
           </div>
         </div>
         <div class="card-actions">
-          <a href="http://192.168.178.118:8080/library/?k=GT342EU06RGK1Csaxx-Z1g" class="btn btn-primary">📖 Открыть читалку</a>
+          <a href="/books?k=GT342EU06RGK1Csaxx-Z1g" class="btn btn-primary hub-link-books">📖 Открыть читалку</a>
         </div>
       </div>
 
@@ -396,8 +396,47 @@
     <a href="/games/foldwink/" class="tab-item"><i class="fa-solid fa-dice"></i><span>Foldwink</span></a>
     <a href="/games/screencreep/" class="tab-item"><i class="fa-solid fa-ghost"></i><span>Creep</span></a>
     <a href="/verbum/" class="tab-item"><i class="fa-solid fa-microphone"></i><span>Verbum</span></a>
-    <a href="http://192.168.178.118:8080/photos/?k=GT342EU06RGK1Csaxx-Z1g" class="tab-item"><i class="fa-solid fa-images"></i><span>Фото</span></a>
-    <a href="http://192.168.178.118:8080/library/?k=GT342EU06RGK1Csaxx-Z1g" class="tab-item"><i class="fa-solid fa-book-open"></i><span>Книги</span></a>
+    <a href="/photos/?k=GT342EU06RGK1Csaxx-Z1g" class="tab-item hub-link-photo"><i class="fa-solid fa-images"></i><span>Фото</span></a>
+    <a href="/books?k=GT342EU06RGK1Csaxx-Z1g" class="tab-item hub-link-books"><i class="fa-solid fa-book-open"></i><span>Книги</span></a>
   </nav>
+
+  <script>
+    // Smart Adaptive Connection Resolver (Local Wi-Fi Gigabit vs Global HTTPS Tunnel)
+    (async function() {
+      const token = 'GT342EU06RGK1Csaxx-Z1g';
+      try { localStorage.setItem('hub_auth', token); } catch(e){}
+
+      const statusBadge = document.querySelector('.status-badge');
+      
+      // Default fallback URLs
+      let photoTarget = `/photos/?k=${token}`;
+      let booksTarget = `/books?k=${token}`;
+      let isLocal = window.location.hostname === '192.168.178.118' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+      if (isLocal) {
+        if (statusBadge) statusBadge.innerHTML = '<span class="status-dot" style="background:#10b981;"></span> Домашний Wi-Fi';
+      } else {
+        // We are on evseev.site (external / HTTPS)
+        // 1. Fetch live active tunnel endpoint from hub_status.json
+        try {
+          const resp = await fetch('/hub_status.json?t=' + Date.now());
+          if (resp.ok) {
+            const data = await resp.json();
+            if (data && data.photos_url && data.books_url) {
+              photoTarget = data.photos_url;
+              booksTarget = data.books_url;
+              if (statusBadge) statusBadge.innerHTML = '<span class="status-dot" style="background:#38bdf8; box-shadow:0 0 8px #38bdf8;"></span> HTTPS Вне дома';
+            }
+          }
+        } catch(e) {
+          console.log('Using relative routing');
+        }
+      }
+
+      // Apply resolved URLs to all buttons and tab bar items
+      document.querySelectorAll('.hub-link-photo').forEach(el => { el.href = photoTarget; });
+      document.querySelectorAll('.hub-link-books').forEach(el => { el.href = booksTarget; });
+    })();
+  </script>
 </body>
 </html>
