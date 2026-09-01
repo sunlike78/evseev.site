@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Sprint Scope Guard & Agile JQL Pro — Neural Void</title>
+  <meta name="description" content="Scrum Scope Creep Sentinel, 1-Click Scope Swap capacity balancer, and custom JQL functions for Jira Cloud. Zero-data-egress Forge architecture.">
+  <link rel="canonical" href="https://neural-void.com/sprint-scope-guard/">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Sprint Scope Guard & Agile JQL Pro — Neural Void">
+  <meta property="og:description" content="Scrum Scope Creep Sentinel, 1-Click Scope Swap capacity balancer, and custom JQL functions for Jira Cloud. Zero-data-egress Forge architecture.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://neural-void.com/sprint-scope-guard/">
+  <meta property="og:image" content="https://neural-void.com/assets/img/og-cover.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Sprint Scope Guard & Agile JQL Pro — Neural Void">
+  <meta name="twitter:description" content="Scrum Scope Creep Sentinel, 1-Click Scope Swap capacity balancer, and custom JQL functions for Jira Cloud.">
+  <meta name="twitter:image" content="https://neural-void.com/assets/img/og-cover.png">
+
+  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <style>
+    .badge-chip {
+      display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px;
+      border-radius: 20px; font-family: var(--nv-font-mono); font-size: 0.78rem; font-weight: 600;
+      background: rgba(0, 212, 245, 0.08); border: 1px solid rgba(0, 212, 245, 0.25); color: var(--nv-accent);
+    }
+    .lang-bar {
+      background: rgba(12, 12, 20, 0.9);
+      border-top: 1px solid var(--nv-border);
+      border-bottom: 1px solid var(--nv-border);
+      padding: 16px 0;
+    }
+    .lang-switcher-pill {
+      display: inline-flex;
+      background: var(--nv-surface-hi);
+      border: 1px solid var(--nv-border-hi);
+      border-radius: 20px;
+      padding: 3px;
+      gap: 4px;
+    }
+    .lang-pill-btn {
+      background: transparent;
+      border: none;
+      color: var(--nv-text-dim);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all var(--nv-transition);
+      font-family: var(--nv-font-mono);
+    }
+    .lang-pill-btn.active {
+      background: var(--nv-accent);
+      color: var(--nv-bg);
+      font-weight: 700;
+    }
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-top: 48px;
+    }
+    .feature-card {
+      background: rgba(17, 17, 24, 0.85);
+      border: 1px solid var(--nv-border-hi);
+      border-radius: var(--nv-radius);
+      padding: 32px;
+      transition: border-color var(--nv-transition), transform var(--nv-transition);
+    }
+    .feature-card:hover {
+      border-color: rgba(0, 212, 245, 0.4);
+      transform: translateY(-2px);
+    }
+    .code-pill {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-family: var(--nv-font-mono);
+      font-size: 0.85rem;
+      color: var(--nv-accent);
+      margin-bottom: 8px;
+    }
+    @media (max-width: 768px) {
+      .cards-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== HEADER ========== -->
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav">
+        <a href="/" class="nav-logo">NEURAL<span>VOID</span></a>
+        <ul class="nav-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/#jira-suite">Jira Suite</a></li>
+          <li><a href="/sprint-scope-guard/" style="color: var(--nv-accent); font-weight: 600;">Scope Guard</a></li>
+          <li><a href="/verbum/">Verbum</a></li>
+          <li><a href="/foldwink/">Foldwink</a></li>
+          <li><a href="/privacy/">Privacy</a></li>
+          <li><a href="mailto:hello@neural-void.com" class="btn btn-ghost" style="padding: 6px 16px;">Support</a></li>
+        </ul>
+        <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">&#9776;</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ========== HERO ========== -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="container">
+      <div style="max-width: 820px;" class="reveal">
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <span class="badge-chip">⚡ Jira Cloud Forge App</span>
+          <span class="badge-chip" style="color: #4ade80; border-color: rgba(74, 222, 128, 0.3); background: rgba(74, 222, 128, 0.08);">🛡️ Runs on Atlassian Certified</span>
+          <span class="badge-chip" style="color: #c084fc; border-color: rgba(192, 132, 252, 0.3); background: rgba(192, 132, 252, 0.08);">🔒 Zero Data Egress</span>
+        </div>
+
+        <h1 class="hero-title">
+          Stop Mid-Sprint Scope Creep. <span class="accent">Protect Team Velocity.</span>
+        </h1>
+        
+        <p class="hero-sub">
+          Real-time Scrum scope creep radar, 1-Click Smart Scope Swap («1-In-1-Out»), predictive goal blowout timeline, and AI retrospective summaries directly inside your Jira Cloud boards.
+        </p>
+
+        <div class="hero-actions">
+          <a href="https://marketplace.atlassian.com/vendors/48554082" target="_blank" rel="noopener" class="btn btn-primary" style="padding: 14px 28px;">
+            Install from Atlassian Marketplace ↗
+          </a>
+          <a href="#features" class="btn btn-ghost">Explore Features</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== INTERACTIVE LANGUAGE SWITCHER BAR ========== -->
+  <section class="lang-bar">
+    <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+      <div style="font-size: 0.9rem; color: var(--nv-text-dim); font-family: var(--nv-font-mono);">
+        Product Overview Documentation &bull; v3.12.0 Production Release
+      </div>
+      <div>
+        <div class="lang-switcher-pill">
+          <button class="lang-pill-btn active" data-lang-btn="en" onclick="setDocLang('en')">🇬🇧 English</button>
+          <button class="lang-pill-btn" data-lang-btn="de" onclick="setDocLang('de')">🇩🇪 Deutsch</button>
+          <button class="lang-pill-btn" data-lang-btn="ru" onclick="setDocLang('ru')">🇷🇺 Русский</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FEATURES SECTION ========== -->
+  <section class="section" id="features">
+    <div class="container">
+      
+      <!-- ENGLISH CONTENT BLOCK -->
+      <div class="doc-lang-block" data-lang="en">
+        <div class="reveal">
+          <span class="section-label">Core Pillars</span>
+          <h2 class="section-title">Engineered for High-Discipline Scrum Teams</h2>
+          <p class="section-text">
+            Sprints don't fail at retro — they fail mid-week when unplanned tickets quietly blow the commitment baseline.
+          </p>
+        </div>
+
+        <div class="cards-grid">
+          <div class="feature-card reveal">
+            <h3 style="color: var(--nv-white); font-size: 1.25rem; margin-bottom: 12px;">📡 0ms Real-Time Scope Radar</h3>
+            <p style="color: var(--nv-text-dim); font-size: 0.95rem; line-height: 1.6;">
+              Instant SWR local cache monitors mid-sprint additions with zero API lag. Visual color-coded alerts warn you when additions exceed safety thresholds (🟢 15% Healthy ➔ 🟡 25% Warning ➔ 🔴 Critical Goal Risk).
+            </p>
+          </div>
+
+          <div class="feature-card reveal">
+            <h3 style="color: var(--nv-white); font-size: 1.25rem; margin-bottom: 12px;">⚖️ 1-Click Smart Scope Swap</h3>
+            <p style="color: var(--nv-text-dim); font-size: 0.95rem; line-height: 1.6;">
+              When stakeholders inject an urgent 5 SP mandate, don't break commitments — swap! In 1 click, the assistant identifies and deschedules equivalent To-Do tasks back to the backlog to restore 100% capacity balance.
+            </p>
+          </div>
+
+          <div class="feature-card reveal">
+            <h3 style="color: var(--nv-white); font-size: 1.25rem; margin-bottom: 12px;">🔮 Predictive Breach Forecasting</h3>
+            <p style="color: var(--nv-text-dim); font-size: 0.95rem; line-height: 1.6;">
+              Tracks Story Points injected per calendar day and calculates the exact date when scope inflation will derail your delivery goal. Includes an interactive What-If velocity simulator.
+            </p>
+          </div>
+
+          <div class="feature-card reveal">
+            <h3 style="color: var(--nv-white); font-size: 1.25rem; margin-bottom: 12px;">📝 AI Retrospective Compiler</h3>
+            <p style="color: var(--nv-text-dim); font-size: 0.95rem; line-height: 1.6;">
+              Generates executive Markdown retrospectives for Confluence and Slack. Automatically classifies scope creep root causes (Security Hotfixes vs Sales Mandates vs Feature Creep).
+            </p>
+          </div>
+
+          <div class="feature-card reveal">
+            <h3 style="color: var(--nv-white); font-size: 1.25rem; margin-bottom: 12px;">⚡ Custom Agile JQL Functions</h3>
+            <p style="color: var(--nv-text-dim); font-size: 0.95rem; line-height: 1.6; margin-bottom: 14px;">
+              Query scope deviations natively in Jira filters and dashboards:
+            </p>
+            <div class="code-pill"><code>issue in addedToSprintAfterStart()</code></div>
+            <div class="code-pill"><code>issue in removedFromSprint()</code></div>
+          </div>
+
+          <div class="feature-card reveal">
+            <h3 style="color: var(--nv-white); font-size: 1.25rem; margin-bottom: 12px;">🔒 Zero External Data Egress</h3>
+            <p style="color: var(--nv-text-dim); font-size: 0.95rem; line-height: 1.6;">
+              Built entirely on Atlassian Forge. Your issue titles, user names, and sprint estimates never leave your Atlassian Cloud tenant. Fully GDPR and SOC2 compliant.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- DEUTSCH CONTENT BLOCK -->
+      <div class="doc-lang-block" data-lang="de" style="display: none;">
+        <div class="reveal">
+          <span class="section-label">Kernfunktionen</span>
+          <h2 class="section-title">Entwickelt für disziplinierte Scrum-Teams</h2>
+          <p class="section-text">
+            Sprints scheitern nicht bei der Retrospektive — sie scheitern unter der Woche, wenn ungeplante Tickets die Planungsgrundlage sprengen.
+          </p>
+        </div>
+
+        <div class="cards-grid">
+          <div class="feature-card reveal">
+            <h3 style="color: var(--nv-white); font-size: 1.25rem; margin-bottom: 12px;">📡 0ms Echtzeit Scope-Radar</h3>
+            <p style="color: var(--nv-text-dim); font-size: 0.95rem; line-height: 1.6;">
+              Lokaler SWR-Cache überwacht Ticket-Zugänge ohne Verzögerung. Visuelle Warnstufen (🟢 15% Normal ➔ 🟡 25% Warnung ➔ 🔴 Kritisches Risiko).
+            </p>
+          </div>
+
+          <div class="feature-card reveal">
+            <h3 style="color: var(--nv-white); font-size: 1.25rem; margin-bottom: 12px;">⚖️ 1-Klick Smart Scope Swap</h3>
+            <p style="color: var(--nv-text-dim); font-size: 0.95rem; line-height: 1.6;">
+              Dringende Aufgabe hinzugefügt? Mit 1 Klick werden To-Do-Tickets mit gleicher Story-Point-Zahl zurück ins Backlog verschoben, um das Gleichgewicht wiederherzustellen.
+            </p>
+          </div>
+
+          <div class="feature-card reveal">
+            <h3 style="color: var(--nv-white); font-size: 1.25rem; margin-bottom: 12px;">🔮 Prognose von Zielüberschreitungen</h3>
+            <p style="color: var(--nv-text-dim); font-size: 0.95rem; line-height: 1.6;">
+              Berechnet anhand der täglichen Zuwachsrate das genaue Datum, an dem das Sprint-Ziel gefährdet wird. Inklusive Was-Wäre-Wenn Simulator.
+            </p>
+          </div>
+
+          <div class="feature-card reveal">
+            <h3 style="color: var(--nv-white); font-size: 1.25rem; margin-bottom: 12px;">📝 KI-Retrospektiven Generator</h3>
+            <p style="color: var(--nv-text-dim); font-size: 0.95rem; line-height: 1.6;">
+              Erstellt strukturierte Markdown-Zusammenfassungen für Confluence mit automatischer Ursachenanalyse von Sprint-Erweiterungen.
+            </p>
+          </div>
+
+          <div class="feature-card reveal">
+            <h3 style="color: var(--nv-white); font-size: 1.25rem; margin-bottom: 12px;">⚡ Eigene Agile JQL-Funktionen</h3>
+            <p style="color: var(--nv-text-dim); font-size: 0.95rem; line-height: 1.6; margin-bottom: 14px;">
+              Filtern Sie Sprint-Abweichungen direkt in Jira-Boards und Berichten:
+            </p>
+            <div class="code-pill"><code>issue in addedToSprintAfterStart()</code></div>
+            <div class="code-pill"><code>issue in removedFromSprint()</code></div>
+          </div>
+
+          <div class="feature-card reveal">
+            <h3 style="color: var(--nv-white); font-size: 1.25rem; margin-bottom: 12px;">🔒 Null Datenabfluss (Zero Egress)</h3>
+            <p style="color: var(--nv-text-dim); font-size: 0.95rem; line-height: 1.6;">
+              Vollständig auf Atlassian Forge gehostet. Ihre Daten verlassen niemals Ihre Atlassian Cloud Umgebung. 100% DSGVO- und SOC2-konform.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- RUSSIAN CONTENT BLOCK -->
+      <div class="doc-lang-block" data-lang="ru" style="display: none;">
+        <div class="reveal">
+          <span class="section-label">Ключевые возможности</span>
+          <h2 class="section-title">Инструмент дисциплины для Scrum-команд</h2>
+          <p class="section-text">
+            Спринты срываются не на ретроспективе — они ломаются в середине недели, когда несанкционированные задачи раздувают плановый скоуп.
+          </p>
+        </div>
+
+        <div class="cards-grid">
+          <div class="feature-card reveal">
+            <h3 style="color: var(--nv-white); font-size: 1.25rem; margin-bottom: 12px;">📡 Турбо-радар Scope Creep (0мс)</h3>
+            <p style="color: var(--nv-text-dim); font-size: 0.95rem; line-height: 1.6;">
+              Мгновенный локальный кэш отслеживает все вбросы без лагов API с цветовой шкалой риска (🟢 15% Норма ➔ 🟡 25% Внимание ➔ 🔴 Критический риск).
+            </p>
+          </div>
+
+          <div class="feature-card reveal">
+            <h3 style="color: var(--nv-white); font-size: 1.25rem; margin-bottom: 12px;">⚖️ 1-Click Smart Scope Swap</h3>
+            <p style="color: var(--nv-text-dim); font-size: 0.95rem; line-height: 1.6;">
+              Пришел срочный запрос на +5 SP? Не ломайте спринт — помощник в 1 клик находит и выгружает To-Do задачи обратно в бэклог, восстанавливая баланс 100%.
+            </p>
+          </div>
+
+          <div class="feature-card reveal">
+            <h3 style="color: var(--nv-white); font-size: 1.25rem; margin-bottom: 12px;">🔮 Предиктивный расчет срыва дедлайна</h3>
+            <p style="color: var(--nv-text-dim); font-size: 0.95rem; line-height: 1.6;">
+              Анализирует скорость раздувания скоупа (SP/день) и рассчитывает точную дату срыва цели спринта. Включает интерактивный «Что-если» симулятор.
+            </p>
+          </div>
+
+          <div class="feature-card reveal">
+            <h3 style="color: var(--nv-white); font-size: 1.25rem; margin-bottom: 12px;">📝 Авто-компилятор Ретро-отчетов</h3>
+            <p style="color: var(--nv-text-dim); font-size: 0.95rem; line-height: 1.6;">
+              Генерирует готовый отчет в Markdown для Confluence с разбивкой причин вбросов (Багфиксы vs Бизнес-требования vs Неучтенный скоуп).
+            </p>
+          </div>
+
+          <div class="feature-card reveal">
+            <h3 style="color: var(--nv-white); font-size: 1.25rem; margin-bottom: 12px;">⚡ Кастомные Agile JQL-функции</h3>
+            <p style="color: var(--nv-text-dim); font-size: 0.95rem; line-height: 1.6; margin-bottom: 14px;">
+              Ищите отклонения скоупа напрямую через стандартный поиск Jira:
+            </p>
+            <div class="code-pill"><code>issue in addedToSprintAfterStart()</code></div>
+            <div class="code-pill"><code>issue in removedFromSprint()</code></div>
+          </div>
+
+          <div class="feature-card reveal">
+            <h3 style="color: var(--nv-white); font-size: 1.25rem; margin-bottom: 12px;">🔒 Нулевая утечка данных (Zero Data Egress)</h3>
+            <p style="color: var(--nv-text-dim); font-size: 0.95rem; line-height: 1.6;">
+              100% Serverless на платформе Atlassian Forge. Ваши тикеты и оценки никогда не покидают облако Atlassian. Полное соответствие GDPR и SOC2.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========== CALL TO ACTION ========== -->
+  <section class="section" style="background: rgba(12, 12, 20, 0.6); border-top: 1px solid var(--nv-border); text-align: center;">
+    <div class="container reveal">
+      <span class="section-label">Get Started</span>
+      <h2 class="section-title">Take Full Control of Your Sprint Velocity</h2>
+      <p class="section-text" style="margin: 0 auto 32px auto;">
+        Install Sprint Scope Guard on your Jira Cloud instance today. Free 30-day full reverse trial, no credit card required.
+      </p>
+      <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
+        <a href="https://marketplace.atlassian.com/vendors/48554082" target="_blank" rel="noopener" class="btn btn-primary" style="padding: 14px 32px; font-weight: 600;">
+          Add to Jira Cloud ↗
+        </a>
+        <a href="mailto:hello@neural-void.com" class="btn btn-ghost">Contact Support</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-inner">
+        <p class="footer-copy">&copy; 2026 Neural Void &bull; Runs on Atlassian Certified</p>
+        <ul class="footer-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/#jira-suite">Jira Suite</a></li>
+          <li><a href="/sprint-scope-guard/">Scope Guard</a></li>
+          <li><a href="/verbum/">Verbum</a></li>
+          <li><a href="/foldwink/">Foldwink</a></li>
+          <li><a href="/privacy/">Privacy Policy</a></li>
+          <li><a href="mailto:hello@neural-void.com">Support</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/main.js"></script>
+  <script>
+    function setDocLang(lang) {
+      try {
+        localStorage.setItem('nv_lang', lang);
+      } catch(e) {}
+      document.querySelectorAll('.doc-lang-block').forEach(el => {
+        el.style.display = (el.getAttribute('data-lang') === lang) ? 'block' : 'none';
+      });
+      document.querySelectorAll('.lang-pill-btn').forEach(btn => {
+        const target = btn.getAttribute('data-lang-btn');
+        btn.classList.toggle('active', target === lang);
+      });
+    }
+
+    // Initialize stored language preference
+    (function() {
+      try {
+        const saved = localStorage.getItem('nv_lang') || localStorage.getItem('verbum_lang');
+        if (saved && (saved === 'de' || saved === 'ru')) {
+          setDocLang(saved);
+        } else {
+          setDocLang('en');
+        }
+      } catch(e) {
+        setDocLang('en');
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Support & Help Desk — Neural Void</title>
+  <meta name="description" content="Dedicated 24/7 customer support portal, SLA commitments, and ticketing for Neural Void Atlassian Marketplace applications.">
+  <link rel="canonical" href="https://neural-void.com/support/">
+  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <style>
+    .support-card {
+      background: var(--nv-surface);
+      border: 1px solid var(--nv-border);
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 24px;
+    }
+    .sla-badge {
+      display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px;
+      border-radius: 16px; font-family: var(--nv-font-mono); font-size: 0.8rem;
+      background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; color: #10b981;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav">
+        <a href="/" class="nav-logo">NEURAL<span>VOID</span></a>
+        <ul class="nav-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/sprint-scope-guard/">Documentation</a></li>
+          <li><a href="/privacy/">Privacy</a></li>
+          <li><a href="/support/" style="color: var(--nv-accent); font-weight: 600;">Support</a></li>
+          <li><a href="mailto:support@neural-void.com" class="btn btn-primary" style="padding: 6px 16px;">Open Ticket</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section class="section" style="padding-top: 140px; min-height: 80vh;">
+    <div class="container" style="max-width: 800px;">
+      <div style="margin-bottom: 36px; text-align: center;">
+        <span class="badge-chip" style="margin-bottom: 12px;">24/7 CUSTOMER SUPPORT & SLA</span>
+        <h1 style="font-size: 2.2rem; margin-bottom: 12px;">Marketplace Customer Support Portal</h1>
+        <p style="color: var(--nv-text-dim); font-size: 1.05rem;">
+          We provide dedicated enterprise support for all Neural Void Atlassian Cloud applications.
+        </p>
+      </div>
+
+      <div class="support-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <h2 style="font-size: 1.3rem; margin: 0;">📩 Open a Support Request</h2>
+          <span class="sla-badge">SLA: &lt; 4 Hours First Response</span>
+        </div>
+        <p style="color: var(--nv-text-dim); margin-bottom: 20px; line-height: 1.6;">
+          For bug reports, feature requests, or enterprise licensing assistance, reach out directly to our engineering team:
+        </p>
+        <div style="background: rgba(0, 212, 245, 0.05); border: 1px solid rgba(0, 212, 245, 0.2); padding: 18px; border-radius: 8px; margin-bottom: 20px;">
+          <div style="font-family: var(--nv-font-mono); font-size: 1.1rem; color: var(--nv-accent); font-weight: 700;">
+            📧 <a href="mailto:support@neural-void.com" style="color: var(--nv-accent); text-decoration: underline;">support@neural-void.com</a>
+          </div>
+          <div style="font-size: 0.85rem; color: var(--nv-text-dim); margin-top: 6px;">
+            Monitored 24/7 with automated priority triage for Sev-1 production outages.
+          </div>
+        </div>
+      </div>
+
+      <div class="support-card">
+        <h2 style="font-size: 1.3rem; margin-bottom: 14px;">⏱️ Service Level Agreement (SLA) Matrix</h2>
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+          <thead>
+            <tr style="border-bottom: 1px solid var(--nv-border); text-align: left;">
+              <th style="padding: 10px 0; color: var(--nv-text-dim);">Severity</th>
+              <th style="padding: 10px 0; color: var(--nv-text-dim);">Definition</th>
+              <th style="padding: 10px 0; color: var(--nv-text-dim);">Response Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid var(--nv-border);">
+              <td style="padding: 12px 0; font-weight: 700; color: #ef4444;">🔴 Sev-1 (Critical)</td>
+              <td style="padding: 12px 0; color: var(--nv-text-dim);">App is unavailable or blocking Jira workflows</td>
+              <td style="padding: 12px 0; font-family: var(--nv-font-mono); font-weight: 700;">&lt; 2 Hours</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--nv-border);">
+              <td style="padding: 12px 0; font-weight: 700; color: #f59e0b;">🟡 Sev-2 (Major)</td>
+              <td style="padding: 12px 0; color: var(--nv-text-dim);">Core feature degraded with workaround available</td>
+              <td style="padding: 12px 0; font-family: var(--nv-font-mono); font-weight: 700;">&lt; 6 Hours</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 0; font-weight: 700; color: #10b981;">🟢 Sev-3 (General)</td>
+              <td style="padding: 12px 0; color: var(--nv-text-dim);">General questions, UI feedback, minor improvements</td>
+              <td style="padding: 12px 0; font-family: var(--nv-font-mono); font-weight: 700;">&lt; 24 Hours</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="support-card">
+        <h2 style="font-size: 1.3rem; margin-bottom: 12px;">🛡️ Zero-Egress Architecture Guarantee</h2>
+        <p style="color: var(--nv-text-dim); line-height: 1.6; font-size: 0.95rem;">
+          Our apps are built 100% on native <strong>Atlassian Forge</strong> serverless architecture. Your ticket data, sprint scope metrics, and user information never leave your Atlassian Cloud perimeter.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container" style="text-align: center; color: var(--nv-text-dim); font-size: 0.85rem; padding: 24px 0;">
+      © 2026 Neural Void / Vladimir Evseev. All rights reserved. • <a href="/privacy/" style="color: var(--nv-text-dim);">Privacy Policy</a> • <a href="/terms/" style="color: var(--nv-text-dim);">Terms of Service</a>
+    </div>
+  </footer>
+
+</body>
+</html>
