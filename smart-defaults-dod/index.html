@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Defaults & Definition of Done Guard — Neural Void</title>
+  <meta name="description" content="Automate Jira quality gates: enforce Definition of Done checklists on issue view, pre-populate description templates, and block premature Done transitions. 100% Forge zero-egress.">
+  <link rel="canonical" href="https://neural-void.com/smart-defaults-dod/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --nv-bg: #08080d;
+      --nv-surface: #0f0f18;
+      --nv-surface-hi: #161624;
+      --nv-border: #1e1e30;
+      --nv-border-hi: #2e2e48;
+      --nv-accent: #00d4f5;
+      --nv-accent-alt: #8b5cf6;
+      --nv-text: #f1f5f9;
+      --nv-text-dim: #94a3b8;
+      --nv-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --nv-font-mono: 'JetBrains Mono', monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--nv-bg);
+      color: var(--nv-text);
+      font-family: var(--nv-font-sans);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    a { color: var(--nv-accent); text-decoration: none; transition: 0.2s; }
+    a:hover { opacity: 0.85; text-decoration: underline; }
+    .container { max-width: 920px; margin: 0 auto; padding: 0 24px; width: 100%; }
+    header {
+      border-bottom: 1px solid var(--nv-border);
+      background: rgba(8, 8, 13, 0.85);
+      backdrop-filter: blur(12px);
+      position: sticky; top: 0; z-index: 100;
+      padding: 18px 0;
+    }
+    .nav-wrap { display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.5px; color: #fff; font-family: var(--nv-font-mono); }
+    .logo span { color: var(--nv-accent); }
+    .nav-links { display: flex; gap: 20px; list-style: none; align-items: center; font-size: 0.9rem; }
+    .nav-links a { color: var(--nv-text-dim); }
+    .nav-links a.active { color: var(--nv-accent); font-weight: 600; }
+    .hero { padding: 50px 0 30px; text-align: center; }
+    .badge-chip {
+      display: inline-block; padding: 4px 12px; border-radius: 20px;
+      font-family: var(--nv-font-mono); font-size: 0.75rem; font-weight: 600;
+      background: rgba(0, 212, 245, 0.1); border: 1px solid rgba(0, 212, 245, 0.3);
+      color: var(--nv-accent); margin-bottom: 16px;
+    }
+    h1 { font-size: 2.2rem; font-weight: 700; letter-spacing: -0.8px; margin-bottom: 12px; color: #fff; }
+    .subtitle { color: var(--nv-text-dim); font-size: 1.05rem; max-width: 680px; margin: 0 auto 20px; }
+    .card {
+      background: var(--nv-surface);
+      border: 1px solid var(--nv-border);
+      border-radius: 14px;
+      padding: 30px;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+    h2 { font-size: 1.3rem; color: #fff; margin-bottom: 14px; }
+    h3 { font-size: 1.05rem; color: var(--nv-accent); margin-top: 16px; margin-bottom: 8px; }
+    p { color: var(--nv-text-dim); margin-bottom: 14px; line-height: 1.7; font-size: 0.95rem; }
+    ul { padding-left: 20px; margin-bottom: 16px; color: var(--nv-text-dim); }
+    li { margin-bottom: 8px; line-height: 1.6; }
+    .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 16px; }
+    .feature-box {
+      background: var(--nv-surface-hi);
+      border: 1px solid var(--nv-border-hi);
+      border-radius: 10px;
+      padding: 18px;
+    }
+    .feature-box h4 { color: #fff; margin-bottom: 6px; font-size: 1rem; }
+    .feature-box p { font-size: 0.85rem; margin-bottom: 0; }
+    .code-pill { font-family: var(--nv-font-mono); background: rgba(0, 212, 245, 0.1); color: var(--nv-accent); padding: 2px 6px; border-radius: 4px; font-size: 0.85rem; }
+    footer { margin-top: auto; border-top: 1px solid var(--nv-border); padding: 30px 0; text-align: center; color: var(--nv-text-dim); font-size: 0.85rem; }
+</style>
+</head>
+<body>
+
+  <header>
+    <div class="container">
+      <div class="nav-wrap">
+        <a href="/" class="logo">NEURAL<span>VOID</span></a>
+        <ul class="nav-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/smart-defaults-dod/" class="active">Documentation</a></li>
+          <li><a href="/support/">Support</a></li>
+          <li><a href="/privacy/">Privacy</a></li>
+          <li><a href="/terms/">Terms</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="hero">
+      <span class="badge-chip">ATLASSIAN FORGE CLOUD APP</span>
+      <h1>Smart Defaults & Definition of Done Guard</h1>
+      <p class="subtitle">Enforce DoD Checklists, Auto-Populate Description Templates and Block Incomplete Done Transitions</p>
+    </div>
+
+    <div class="card">
+      <h2>🎯 Overview</h2>
+      <p>Automate Jira quality gates: enforce Definition of Done checklists on issue view, pre-populate description templates, and block premature Done transitions. 100% Forge zero-egress.</p>
+      
+      <h2>🌟 Key Capabilities</h2>
+      <div class="feature-grid">
+        
+        <div class="feature-box">
+          <h4>Interactive DoD Checklists</h4>
+          <p>Dynamic checklist widget on issue view tracking Definition of Done completion in real-time with interactive progress badges.</p>
+        </div>
+        <div class="feature-box">
+          <h4>Smart Description Templates</h4>
+          <p>Automatically populates standard reproduction steps, acceptance criteria, and components upon issue creation per issue type.</p>
+        </div>
+        <div class="feature-box">
+          <h4>Workflow Transition Guard</h4>
+          <p>Built-in workflow validator that intercepts and blocks transitions to 'Done' until 100% of required checklist items are checked.</p>
+        </div>
+        <div class="feature-box">
+          <h4>Per-Issue-Type Rules</h4>
+          <p>Configure custom templates, mandatory checklists, and automated defaults per Project and Issue Type in project settings.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🚀 Quick Start Guide</h2>
+      <ul>
+        <li><strong>Step 1:</strong> Install Smart Defaults & DoD Guard from Atlassian Marketplace with 30-day Free Trial.</li>
+<li><strong>Step 2:</strong> Navigate to Project Settings -> Smart Defaults & DoD Configuration.</li>
+<li><strong>Step 3:</strong> Define your Default Description Templates and required DoD Checklist items for Bugs, Stories, and Tasks.</li>
+<li><strong>Step 4:</strong> Open any Jira issue to see the live checklist widget and test the transition validator.</li>
+
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>🔒 Zero-Egress Security & Architecture</h2>
+      <p>
+        <strong>Smart Defaults & Definition of Done Guard</strong> is built 100% on the native <strong>Atlassian Forge</strong> serverless infrastructure:
+      </p>
+      <ul>
+        <li><strong>No External Servers:</strong> All compute runs inside isolated Atlassian Forge microVMs.</li>
+        <li><strong>Zero Data Egress:</strong> Issue data, checklists, configurations, and logs never leave your Jira Cloud instance.</li>
+        <li><strong>Enterprise Compliance:</strong> Inherits your Jira Cloud tenant's GDPR, SOC 2, and data residency boundary automatically.</li>
+      </ul>
+      <p>
+        For enterprise questions, consult our <a href="/privacy/">Privacy Policy</a> or contact <a href="mailto:support@neural-void.com">support@neural-void.com</a>.
+      </p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      © 2026 Neural Void / Vladimir Evseev. All rights reserved. • <a href="/privacy/">Privacy Policy</a> • <a href="/support/">Support Desk</a> • <a href="/terms/">Terms</a>
+    </div>
+  </footer>
+
+</body>
+</html>
