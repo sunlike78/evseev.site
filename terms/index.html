@@ -5,66 +5,132 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Terms of Service — Neural Void</title>
   <meta name="description" content="Terms of Service for Neural Void Atlassian Marketplace Cloud applications.">
-  <link rel="canonical" href="https://neural-void.com/terms/">
-  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/style.css">
+  <style>
+    :root {
+      --nv-bg: #08080d;
+      --nv-surface: #0f0f18;
+      --nv-surface-hi: #161624;
+      --nv-border: #1e1e30;
+      --nv-border-hi: #2e2e48;
+      --nv-accent: #00d4f5;
+      --nv-text: #f1f5f9;
+      --nv-text-dim: #94a3b8;
+      --nv-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --nv-font-mono: 'JetBrains Mono', monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--nv-bg);
+      color: var(--nv-text);
+      font-family: var(--nv-font-sans);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    a { color: var(--nv-accent); text-decoration: none; transition: 0.2s; }
+    a:hover { opacity: 0.85; text-decoration: underline; }
+    .container { max-width: 860px; margin: 0 auto; padding: 0 24px; width: 100%; }
+    
+    header {
+      border-bottom: 1px solid var(--nv-border);
+      background: rgba(8, 8, 13, 0.85);
+      backdrop-filter: blur(12px);
+      position: sticky; top: 0; z-index: 100;
+      padding: 18px 0;
+    }
+    .nav-wrap { display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.5px; color: #fff; font-family: var(--nv-font-mono); }
+    .logo span { color: var(--nv-accent); }
+    .nav-links { display: flex; gap: 20px; list-style: none; align-items: center; font-size: 0.9rem; }
+    .nav-links a { color: var(--nv-text-dim); }
+    .nav-links a.active { color: var(--nv-accent); font-weight: 600; }
+    
+    .hero { padding: 50px 0 30px; }
+    .badge-chip {
+      display: inline-block; padding: 4px 12px; border-radius: 20px;
+      font-family: var(--nv-font-mono); font-size: 0.75rem; font-weight: 600;
+      background: rgba(0, 212, 245, 0.1); border: 1px solid rgba(0, 212, 245, 0.3);
+      color: var(--nv-accent); margin-bottom: 16px;
+    }
+    h1 { font-size: 2.2rem; font-weight: 700; letter-spacing: -0.8px; margin-bottom: 8px; color: #fff; }
+    .effective-date { color: var(--nv-text-dim); font-size: 0.9rem; font-family: var(--nv-font-mono); }
+    
+    .card {
+      background: var(--nv-surface);
+      border: 1px solid var(--nv-border);
+      border-radius: 14px;
+      padding: 36px;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+    h2 { font-size: 1.25rem; color: #fff; margin-top: 24px; margin-bottom: 10px; }
+    h2:first-of-type { margin-top: 0; }
+    p { color: var(--nv-text-dim); font-size: 0.98rem; line-height: 1.7; margin-bottom: 16px; }
+    ul { padding-left: 24px; margin-bottom: 16px; color: var(--nv-text-dim); }
+    li { margin-bottom: 8px; line-height: 1.6; }
+    
+    footer { margin-top: auto; border-top: 1px solid var(--nv-border); padding: 30px 0; text-align: center; color: var(--nv-text-dim); font-size: 0.85rem; }
+  </style>
 </head>
 <body>
 
-  <header class="site-header">
+  <header>
     <div class="container">
-      <nav class="nav">
-        <a href="/" class="nav-logo">NEURAL<span>VOID</span></a>
+      <div class="nav-wrap">
+        <a href="/" class="logo">NEURAL<span>VOID</span></a>
         <ul class="nav-links">
           <li><a href="/">Home</a></li>
           <li><a href="/sprint-scope-guard/">Documentation</a></li>
           <li><a href="/privacy/">Privacy</a></li>
           <li><a href="/support/">Support</a></li>
+          <li><a href="/terms/" class="active">Terms</a></li>
         </ul>
-      </nav>
+      </div>
     </div>
   </header>
 
-  <section class="section" style="padding-top: 140px; min-height: 80vh;">
-    <div class="container" style="max-width: 800px;">
-      <h1 style="font-size: 2.2rem; margin-bottom: 24px;">Terms of Service</h1>
-      <p style="color: var(--nv-text-dim); margin-bottom: 24px;">Effective Date: January 2026</p>
-
-      <div style="background: var(--nv-surface); border: 1px solid var(--nv-border); border-radius: 12px; padding: 28px; line-height: 1.7; color: var(--nv-text-dim); font-size: 0.95rem;">
-        <h2 style="color: var(--nv-text); font-size: 1.2rem; margin-bottom: 10px;">1. Acceptance of Terms</h2>
-        <p style="margin-bottom: 18px;">
-          By installing and using Neural Void applications (including Sprint Scope Guard & Agile JQL Pro and IntraGuard DLP) via the Atlassian Marketplace, you agree to be bound by these Terms of Service.
-        </p>
-
-        <h2 style="color: var(--nv-text); font-size: 1.2rem; margin-bottom: 10px;">2. Licensing & Subscriptions</h2>
-        <p style="margin-bottom: 18px;">
-          All billing, subscriptions, free trials, and payment processing are managed exclusively by Atlassian via Atlassian Marketplace billing terms.
-        </p>
-
-        <h2 style="color: var(--nv-text); font-size: 1.2rem; margin-bottom: 10px;">3. Data Privacy & Zero-Egress</h2>
-        <p style="margin-bottom: 18px;">
-          Our applications run on the native Atlassian Forge platform. We do not transmit, host, or egress customer issue data, personal identifiable information, or credentials to third-party external servers.
-        </p>
-
-        <h2 style="color: var(--nv-text); font-size: 1.2rem; margin-bottom: 10px;">4. Support & Maintenance</h2>
-        <p style="margin-bottom: 18px;">
-          We provide enterprise support according to our published SLA at <a href="/support/" style="color: var(--nv-accent);">neural-void.com/support</a>.
-        </p>
-
-        <h2 style="color: var(--nv-text); font-size: 1.2rem; margin-bottom: 10px;">5. Contact</h2>
-        <p>
-          For legal inquiries: <a href="mailto:legal@neural-void.com" style="color: var(--nv-accent);">legal@neural-void.com</a>
-        </p>
-      </div>
+  <main class="container">
+    <div class="hero">
+      <span class="badge-chip">LEGAL & COMPLIANCE</span>
+      <h1>Terms of Service</h1>
+      <div class="effective-date">Effective Date: January 2026</div>
     </div>
-  </section>
 
-  <footer class="site-footer">
-    <div class="container" style="text-align: center; color: var(--nv-text-dim); font-size: 0.85rem; padding: 24px 0;">
-      © 2026 Neural Void / Vladimir Evseev. All rights reserved.
+    <div class="card">
+      <h2>1. Acceptance of Terms</h2>
+      <p>
+        By installing, subscribing to, or accessing Neural Void applications (including <em>Sprint Scope Guard & Agile JQL Pro</em>, <em>Smart Defaults & DoD Guard</em>, and <em>JSM Outgoing Email Audit</em>) via the Atlassian Marketplace, you agree to be bound by these Terms of Service.
+      </p>
+
+      <h2>2. Licensing & Subscriptions</h2>
+      <p>
+        All subscriptions, license tiers, tier upgrades, renewals, and billing calculations are processed exclusively by Atlassian via Atlassian Marketplace billing terms. Every paid license includes a standard 30-day Free Trial provided by Atlassian.
+      </p>
+
+      <h2>3. Data Privacy & Zero-Egress Guarantee</h2>
+      <p>
+        Our applications execute 100% inside native <strong>Atlassian Forge</strong> serverless microVMs. We do not transmit, copy, or store customer issue data, sprint logs, or user identities on external third-party servers. All persistent data resides solely within Atlassian Forge App Storage in your tenant.
+      </p>
+
+      <h2>4. Support & SLA Commitments</h2>
+      <p>
+        We provide enterprise customer support in accordance with our published Service Level Agreement at <a href="/support/">neural-void.com/support</a>.
+      </p>
+
+      <h2>5. Governing Law & Contact</h2>
+      <p>
+        For inquiries regarding these terms or licensing agreements, contact us at <a href="mailto:support@neural-void.com">support@neural-void.com</a>.
+      </p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      © 2026 Neural Void / Vladimir Evseev. All rights reserved. • <a href="/privacy/">Privacy Policy</a> • <a href="/support/">Support Desk</a>
     </div>
   </footer>
 
