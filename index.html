@@ -447,12 +447,22 @@
       <!-- Quick Search Chips -->
       <div class="search-chips">
         <span class="chip" onclick="searchFor('Пелевин')">Пелевин</span>
+        <span class="chip" onclick="searchFor('Несбё')">Ю Несбё</span>
+        <span class="chip" onclick="searchFor('Кеплер')">Ларс Кеплер</span>
         <span class="chip" onclick="searchFor('Стругацкие')">Стругацкие</span>
         <span class="chip" onclick="searchFor('Достоевский')">Достоевский</span>
         <span class="chip" onclick="searchFor('Булгаков')">Булгаков</span>
         <span class="chip" onclick="searchFor('Азимов')">Азимов</span>
         <span class="chip" onclick="searchFor('Лем')">Лем</span>
         <span class="chip" onclick="searchFor('Сорокин')">Сорокин</span>
+        <span class="chip" onclick="searchFor('Кинг')">Стивен Кинг</span>
+      </div>
+
+      <!-- Direct Full Catalog Web Reader Link -->
+      <div style="padding: 2px 20px 10px;">
+        <a id="btn-open-full-catalog" href="/books/" target="_blank" class="btn btn-primary" style="display:flex; align-items:center; justify-content:center; gap:8px; padding:10px; font-size:13px; font-weight:700; text-decoration:none; background: linear-gradient(135deg, rgba(129, 140, 248, 0.25), rgba(56, 189, 248, 0.25)); border: 1px solid rgba(129, 140, 248, 0.4); border-radius: 10px;">
+          📚 Открыть полную библиотеку (Страницы авторов, серии, читалка) <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 11px;"></i>
+        </a>
       </div>
 
       <!-- Search Results Area -->
@@ -797,6 +807,8 @@
       if (isLocal) {
         if (statusBadge) statusBadge.innerHTML = '<span class="status-dot" style="background:#10b981;"></span> Домашний Wi-Fi';
         isServerOnline = true;
+        booksTarget = `http://${window.location.hostname}:8081/books?k=${token}`;
+        photoTarget = `http://${window.location.hostname}:8081/photos/?k=${token}`;
       } else {
         // External HTTPS (evseev.site)
         try {
@@ -927,7 +939,7 @@
           const author = b.author ? b.author.replace(/,/g, ' ').trim() : 'Неизвестный автор';
           const sizeKb = Math.round((b.size || 0) / 1024);
           const ext = (b.ext || 'fb2').toUpperCase();
-          const series = b.series ? ` · <i>Серия: ${b.series}${b.ser_no ? ' #' + b.ser_no : ''}</i>` : '';
+          const series = b.series ? ` · <span style="cursor:pointer; color:#a5b4fc;" onclick="event.stopPropagation(); searchFor('${b.series.replace(/'/g, "\\'")}')"><i>Серия: ${b.series}${b.ser_no ? ' #' + b.ser_no : ''}</i></span>` : '';
           const safeTitle = (b.title || 'book').replace(/'/g, "\\'");
 
           // Download URL via tunnel (falls back to Cloud API)
