@@ -378,7 +378,7 @@
           </div>
         </div>
         <div class="card-actions">
-          <a href="https://prizes-adjustment-mills-unable.trycloudflare.com/photos/?k=GT342EU06RGK1Csaxx-Z1g" class="btn btn-primary hub-link-photo">📷 Открыть PhotoHub</a>
+          <a href="https://valuable-maiden-lease-accessing.trycloudflare.com/photos/?k=GT342EU06RGK1Csaxx-Z1g" class="btn btn-primary hub-link-photo">📷 Открыть PhotoHub</a>
         </div>
       </div>
 
@@ -392,7 +392,7 @@
           </div>
         </div>
         <div class="card-actions">
-          <a href="https://prizes-adjustment-mills-unable.trycloudflare.com/library/?k=GT342EU06RGK1Csaxx-Z1g" class="btn btn-primary hub-link-books">📖 Открыть читалку</a>
+          <a href="https://valuable-maiden-lease-accessing.trycloudflare.com/books?k=GT342EU06RGK1Csaxx-Z1g" class="btn btn-primary hub-link-books">📖 Открыть читалку</a>
         </div>
       </div>
 
@@ -419,8 +419,8 @@
     <a href="/games/foldwink/" class="tab-item"><i class="fa-solid fa-dice"></i><span>Foldwink</span></a>
     <a href="/games/screencreep/" class="tab-item"><i class="fa-solid fa-ghost"></i><span>Creep</span></a>
     <a href="/verbum/" class="tab-item"><i class="fa-solid fa-microphone"></i><span>Verbum</span></a>
-    <a href="https://prizes-adjustment-mills-unable.trycloudflare.com/photos/?k=GT342EU06RGK1Csaxx-Z1g" class="tab-item hub-link-photo"><i class="fa-solid fa-images"></i><span>Фото</span></a>
-    <a href="https://prizes-adjustment-mills-unable.trycloudflare.com/library/?k=GT342EU06RGK1Csaxx-Z1g" class="tab-item hub-link-books"><i class="fa-solid fa-book-open"></i><span>Книги</span></a>
+    <a href="https://valuable-maiden-lease-accessing.trycloudflare.com/photos/?k=GT342EU06RGK1Csaxx-Z1g" class="tab-item hub-link-photo"><i class="fa-solid fa-images"></i><span>Фото</span></a>
+    <a href="https://valuable-maiden-lease-accessing.trycloudflare.com/books?k=GT342EU06RGK1Csaxx-Z1g" class="tab-item hub-link-books"><i class="fa-solid fa-book-open"></i><span>Книги</span></a>
   </nav>
 
   <!-- Books Cloud Search Modal (24/7 Google Cloud Always Free) -->
@@ -460,7 +460,7 @@
 
       <!-- Direct Full Catalog Web Reader Link -->
       <div style="padding: 2px 20px 10px;">
-        <a id="btn-open-full-catalog" href="https://prizes-adjustment-mills-unable.trycloudflare.com/library/?k=GT342EU06RGK1Csaxx-Z1g" target="_blank" class="btn btn-primary" style="display:flex; align-items:center; justify-content:center; gap:8px; padding:10px; font-size:13px; font-weight:700; text-decoration:none; background: linear-gradient(135deg, rgba(129, 140, 248, 0.25), rgba(56, 189, 248, 0.25)); border: 1px solid rgba(129, 140, 248, 0.4); border-radius: 10px;">
+        <a id="btn-open-full-catalog" href="https://valuable-maiden-lease-accessing.trycloudflare.com/books?k=GT342EU06RGK1Csaxx-Z1g" target="_blank" class="btn btn-primary" style="display:flex; align-items:center; justify-content:center; gap:8px; padding:10px; font-size:13px; font-weight:700; text-decoration:none; background: linear-gradient(135deg, rgba(129, 140, 248, 0.25), rgba(56, 189, 248, 0.25)); border: 1px solid rgba(129, 140, 248, 0.4); border-radius: 10px;">
           📚 Открыть полную библиотеку (Страницы авторов, серии, читалка) <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 11px;"></i>
         </a>
       </div>
@@ -805,8 +805,8 @@
       const isLocal = window.location.hostname === '192.168.178.118' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
       // Ultra-Fast Dual-Path Detection: LAN (2ms) or Cloudflare Tunnel (200ms)
-      booksTarget = 'https://prizes-adjustment-mills-unable.trycloudflare.com/library/?k=' + token;
-      photoTarget = 'https://prizes-adjustment-mills-unable.trycloudflare.com/photos/?k=' + token;
+      booksTarget = 'https://valuable-maiden-lease-accessing.trycloudflare.com/books?k=' + token;
+      photoTarget = 'https://valuable-maiden-lease-accessing.trycloudflare.com/photos/?k=' + token;
 
       try {
         // Test fast local Wi-Fi ping (200ms max timeout)
@@ -896,9 +896,10 @@
 
     // Live Books Search Engine (Google Cloud Always-Free Backend)
     let searchDebounceTimer = null;
-    const CLOUD_API_BASE = 'https://prizes-adjustment-mills-unable.trycloudflare.com';
-    const FALLBACK_TUNNEL_URL = 'https://prizes-adjustment-mills-unable.trycloudflare.com';
+    const CLOUD_API_BASE = 'https://34.27.195.78.sslip.io';
+    const FALLBACK_TUNNEL_URL = 'https://valuable-maiden-lease-accessing.trycloudflare.com';
     const AUTH_TOKEN = 'GT342EU06RGK1Csaxx-Z1g';
+    let cachedTunnelBase = FALLBACK_TUNNEL_URL;
 
     function normalizeBookQuery(text) {
       if (!text) return '';
@@ -961,20 +962,8 @@
           return;
         }
 
-        // Resolve active tunnel base URL
-        let tunnelBase = '';
-        try {
-          const hubResp = await fetch('/hub_status.json?t=' + Date.now());
-          if (hubResp.ok) {
-            const hubData = await hubResp.json();
-            if (hubData && hubData.online && hubData.public_url) {
-              tunnelBase = hubData.public_url;
-            }
-          }
-        } catch(e) {}
-        if (!tunnelBase) {
-          tunnelBase = FALLBACK_TUNNEL_URL;
-        }
+        // Resolve active tunnel base URL (use cached or booksTarget or fallback)
+        let tunnelBase = cachedTunnelBase || (booksTarget && !booksTarget.includes('/books/') ? booksTarget.split('/books')[0].split('/library')[0] : FALLBACK_TUNNEL_URL);
 
         let html = `<div style="font-size:11px; color:#94a3b8; margin-bottom:8px; font-family:'JetBrains Mono';">Найдено: ${data.count} книг (${data.duration_ms} мс)</div>`;
         data.books.forEach(b => {
