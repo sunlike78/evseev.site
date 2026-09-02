@@ -909,22 +909,47 @@
           return;
         }
 
+        // Resolve the active tunnel base URL for downloads and reader
+        let tunnelBase = '';
+        try {
+          const hubResp = await fetch('/hub_status.json?t=' + Date.now());
+          if (hubResp.ok) {
+            const hubData = await hubResp.json();
+            if (hubData && hubData.online && hubData.public_url) {
+              tunnelBase = hubData.public_url;
+            }
+          }
+        } catch(e) {}
+        const authToken = 'GT342EU06RGK1Csaxx-Z1g';
+
         let html = `<div style="font-size:11px; color:#94a3b8; margin-bottom:8px; font-family:'JetBrains Mono';">Найдено: ${data.count} книг (${data.duration_ms} мс)</div>`;
         data.books.forEach(b => {
           const author = b.author ? b.author.replace(/,/g, ' ').trim() : 'Неизвестный автор';
           const sizeKb = Math.round((b.size || 0) / 1024);
           const ext = (b.ext || 'fb2').toUpperCase();
           const series = b.series ? ` · <i>Серия: ${b.series}${b.ser_no ? ' #' + b.ser_no : ''}</i>` : '';
-          
+          const safeTitle = (b.title || 'book').replace(/'/g, "\\'");
+
+          // Download URL via tunnel (falls back to Cloud API)
+          const dlBase = tunnelBase || CLOUD_API_BASE;
+          const epubUrl = `${dlBase}/api/book/${b.id}/download?format=epub&k=${authToken}`;
+          const fb2Url = `${dlBase}/api/book/${b.id}/download?format=fb2&k=${authToken}`;
+          const readUrl = tunnelBase ? `${tunnelBase}/books?k=${authToken}#read-${b.id}` : '';
+
           html += `
-            <div class="book-item">
-              <div class="book-title">${b.title || 'Без названия'}</div>
-              <div class="book-author">✍️ ${author}</div>
+            <div class="book-item" style="cursor: pointer;" onclick="if(event.target.tagName!=='A'&&!event.target.closest('a')){${readUrl ? `window.open('${readUrl}','_blank')` : `searchFor('${safeTitle}')`}}">
+              <div class="book-title" style="color: #818cf8;">${b.title || 'Без названия'}</div>
+              <div class="book-author" style="cursor:pointer;" onclick="event.stopPropagation(); searchFor('${author.replace(/'/g, "\\'")}')">✍️ ${author}</div>
               <div class="book-meta">
                 <span class="badge-fmt">${ext}</span>
                 <span>${sizeKb} KB</span>
                 ${b.date ? `<span>📅 ${b.date}</span>` : ''}
                 ${series}
+              </div>
+              <div style="display:flex; gap:6px; margin-top:8px;">
+                <a href="${epubUrl}" target="_blank" onclick="event.stopPropagation();" style="flex:1; text-align:center; padding:7px 0; border-radius:8px; background:rgba(16,185,129,0.15); border:1px solid rgba(16,185,129,0.3); color:#10b981; font-size:12px; font-weight:700; text-decoration:none; transition:all 0.15s;">📥 EPUB</a>
+                <a href="${fb2Url}" target="_blank" onclick="event.stopPropagation();" style="flex:1; text-align:center; padding:7px 0; border-radius:8px; background:rgba(129,140,248,0.1); border:1px solid rgba(129,140,248,0.25); color:#a5b4fc; font-size:12px; font-weight:700; text-decoration:none; transition:all 0.15s;">📥 FB2</a>
+                ${readUrl ? `<a href="${readUrl}" target="_blank" onclick="event.stopPropagation();" style="flex:1; text-align:center; padding:7px 0; border-radius:8px; background:rgba(56,189,248,0.1); border:1px solid rgba(56,189,248,0.25); color:#38bdf8; font-size:12px; font-weight:700; text-decoration:none; transition:all 0.15s;">📖 Читать</a>` : ''}
               </div>
             </div>
           `;
