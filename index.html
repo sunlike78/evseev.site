@@ -804,12 +804,25 @@
       
       const isLocal = window.location.hostname === '192.168.178.118' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
-      if (isLocal) {
-        if (statusBadge) statusBadge.innerHTML = '<span class="status-dot" style="background:#10b981;"></span> Домашний Wi-Fi';
-        isServerOnline = true;
-        booksTarget = `http://${window.location.hostname}:8081/books?k=${token}`;
-        photoTarget = `http://${window.location.hostname}:8081/photos/?k=${token}`;
-      } else {
+      // Ultra-Fast Dual-Path Detection: LAN (2ms) or Cloudflare Tunnel (200ms)
+      booksTarget = 'https://foster-participant-programs-pix.trycloudflare.com/library/?k=' + token;
+      photoTarget = 'https://foster-participant-programs-pix.trycloudflare.com/photos/?k=' + token;
+
+      try {
+        // Test fast local Wi-Fi ping (200ms max timeout)
+        const lanPing = new AbortController();
+        const lanTimer = setTimeout(() => lanPing.abort(), 250);
+        const lanCheck = await fetch('http://192.168.178.118:8081/api/photos/stats?k=' + token, { signal: lanPing.signal });
+        clearTimeout(lanTimer);
+        if (lanCheck.ok) {
+          isServerOnline = true;
+          booksTarget = 'http://192.168.178.118:8081/library/?k=' + token;
+          photoTarget = 'http://192.168.178.118:8081/photos/?k=' + token;
+          if (statusBadge) statusBadge.innerHTML = '<span class="status-dot" style="background:#10b981;"></span> Домашний Wi-Fi (2ms)';
+        }
+      } catch (err) {}
+
+      if (!isServerOnline) {
         // External HTTPS (evseev.site)
         try {
           const controller = new AbortController();
@@ -883,8 +896,8 @@
 
     // Live Books Search Engine (Google Cloud Always-Free Backend)
     let searchDebounceTimer = null;
-    const CLOUD_API_BASE = 'https://34.27.195.78.sslip.io';
-    const FALLBACK_TUNNEL_URL = 'https://mortality-competitions-spirituality-gathering.trycloudflare.com';
+    const CLOUD_API_BASE = 'https://foster-participant-programs-pix.trycloudflare.com';
+    const FALLBACK_TUNNEL_URL = 'https://foster-participant-programs-pix.trycloudflare.com';
     const AUTH_TOKEN = 'GT342EU06RGK1Csaxx-Z1g';
 
     function normalizeBookQuery(text) {
