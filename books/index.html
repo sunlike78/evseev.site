@@ -907,7 +907,7 @@
     </div>
 
     <script>
-        let API_BASE = '';
+        var API_BASE = (window.location.origin.includes('evseev.site') || window.location.origin.includes('github.io')) ? 'https://confident-trainers-deals-site.trycloudflare.com' : '';
         let searchTimeout = null;
         let readerFontSize = 18;
         let readerTheme = 'dark';
@@ -1157,7 +1157,7 @@
                 let html = `
                 <div class="flibusta-author-view">
                     <div class="author-top-profile">
-                        <img src="${authorPhotoUrl}" class="author-photo" alt="${escapeHtml(bioInfo.name)}" onerror="this.onerror=null; this.src=`${API_BASE}/api/author/photo?name=${encodeURIComponent(authorName)}`;">
+                        <img src="${authorPhotoUrl}" class="author-photo" alt="${escapeHtml(bioInfo.name)}" onerror="this.style.display='none';">
                         <div class="author-bio-content">
                             <h2>${escapeHtml(bioInfo.name)}</h2>
                             <div class="author-bio-text">${bioInfo.bio}</div>
