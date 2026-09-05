@@ -1051,9 +1051,10 @@
             }
             
             try {
-                let url = `${API_BASE}/api/search?q=${encodeURIComponent(query)}&limit=60`;
+                let normQ = (query || '').replace(/ё/g, 'е').replace(/Ё/g, 'Е').trim();
+                let url = `${API_BASE}/api/search?q=${encodeURIComponent(normQ)}&limit=60`;
                 if (isCloudBackend) {
-                    const qParam = query.trim() || 'несбе';
+                    const qParam = normQ || 'несбе';
                     url = `${API_BASE}/api/books/search?q=${encodeURIComponent(qParam)}&limit=60`;
                 }
                 const res = await fetch(url);
@@ -1715,7 +1716,7 @@
                 document.getElementById('query-input').value = q;
                 performSearch(q);
             } else {
-                performSearch('Несбё');
+                performSearch('Несбе');
             }
         }
 
