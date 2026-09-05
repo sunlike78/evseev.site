@@ -1025,14 +1025,27 @@
         }
 
         function showGlobalSearch() {
-            document.getElementById('breadcrumb').style.display = 'none';
-            document.getElementById('search-section').style.display = 'block';
-            performSearch(document.getElementById('query-input').value);
+            const breadcrumb = document.getElementById('breadcrumb');
+            if (breadcrumb) breadcrumb.style.display = 'none';
+            const searchSection = document.getElementById('search-section');
+            if (searchSection) searchSection.style.display = 'block';
+            const container = document.getElementById('content-container');
+            if (container && !document.getElementById('books-grid')) {
+                container.innerHTML = '<div class="books-grid" id="books-grid"></div>';
+            }
+            const q = document.getElementById('query-input')?.value || '';
+            performSearch(q);
         }
 
         async function performSearch(query) {
-            const grid = document.getElementById('books-grid');
+            let grid = document.getElementById('books-grid');
             const stats = document.getElementById('stats-info');
+            
+            const container = document.getElementById('content-container');
+            if (!grid && container) {
+                container.innerHTML = '<div class="books-grid" id="books-grid"></div>';
+                grid = document.getElementById('books-grid');
+            }
             
             try {
                 let url = `${API_BASE}/api/search?q=${encodeURIComponent(query)}&limit=60`;
@@ -1045,11 +1058,11 @@
                 
                 const booksList = data.books || [];
                 const totalNum = (data.total !== undefined) ? data.total : ((data.count !== undefined) ? data.count : booksList.length);
-                stats.innerHTML = `Найдено <b>${totalNum.toLocaleString()}</b> книг (показано ${booksList.length})`;
-                renderModernGrid(booksList, grid);
+                if (stats) stats.innerHTML = `Найдено <b>${totalNum.toLocaleString()}</b> книг (показано ${booksList.length})`;
+                if (grid) renderModernGrid(booksList, grid);
             } catch (err) {
                 console.error(err);
-                stats.innerText = 'Ошибка соединения с сервером.';
+                if (stats) stats.innerText = 'Ошибка соединения с сервером.';
             }
         }
 
