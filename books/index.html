@@ -809,7 +809,7 @@
                     <i class="fa-solid fa-house"></i>
                     <span>В Хаб</span>
                 </a>
-                <div class="wifi-badge" onclick="alert('Локальный IP сервера: /:8000')">
+                <div class="wifi-badge" id="conn-badge" onclick="alert('Статус соединения: ' + (window.API_BASE || 'Локальный сервер'))">
                     <i class="fa-solid fa-wifi"></i>
                     <span>192.168.178.118</span>
                 </div>
@@ -1063,11 +1063,7 @@
                 event.stopPropagation();
             }
             if (isCloudBackend) {
-                alert('📚 Скачивание EPUB / FB2
-
-Полный 264 GB архив книг хранится на вашем домашнем сервере (8TB HDD).
-
-Для прямой загрузки в Apple Books подключитесь к домашнему Wi-Fi или активируйте Tailscale VPN на телефоне.');
+                alert(`📚 Скачивание EPUB / FB2\n\nПолный 264 GB архив книг хранится на вашем домашнем сервере (8TB HDD).\n\nДля прямой загрузки в Apple Books подключитесь к домашнему Wi-Fi или активируйте Tailscale VPN на телефоне.`);
                 return;
             }
             const btn = event ? (event.currentTarget || event.target) : null;
@@ -1457,7 +1453,7 @@
             document.getElementById('reader-page-info').innerText = 'Загрузка...';
             modal.style.display = 'block';
 
-                        // ⚡ FAST PATH 1: Instant Offline IndexedDB check (0ms)
+            // ⚡ FAST PATH 1: Instant Offline IndexedDB check (0ms)
             const idbData = await loadBookOffline(bookId);
             if (idbData) {
                 parseAndDisplayBook(idbData, bookId);
@@ -1498,7 +1494,7 @@
 
                 try {
                     sessionStorage.setItem(clientCacheKey, JSON.stringify(data));
-                saveBookOffline(bookId, data);
+                    saveBookOffline(bookId, data);
                 } catch (e) {}
 
                 parseAndDisplayBook(data, bookId);
